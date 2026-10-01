@@ -58,6 +58,7 @@ export function SiteHeader() {
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="text-sm font-medium text-muted-foreground hover:text-foreground">
             Discord
           </a>
+          <Link to="/auth" className="btn-ghost !min-h-10 !px-5">Log ind</Link>
           <Link to="/kom-i-gang" className="btn-primary !min-h-10 !px-5">Kom i gang</Link>
         </div>
         <button className="grid h-11 w-11 place-items-center lg:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Luk menu" : "Åbn menu"} aria-expanded={open}>
@@ -73,6 +74,7 @@ export function SiteHeader() {
           ))}
           <div className="mt-5 grid gap-3">
             <Link to="/kom-i-gang" onClick={() => setOpen(false)} className="btn-primary">Kom i gang</Link>
+            <Link to="/auth" onClick={() => setOpen(false)} className="btn-ghost">Log ind</Link>
             <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="btn-ghost">Mød os på Discord</a>
           </div>
         </nav>
