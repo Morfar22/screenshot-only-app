@@ -92,6 +92,7 @@ export function SiteFooter() {
         <div className="flex gap-6 text-sm text-muted-foreground">
           <Link to="/regler" className="hover:text-foreground">Regler</Link>
           <Link to="/kom-i-gang" className="hover:text-foreground">Kom i gang</Link>
+          <Link to="/staff" className="hover:text-foreground">Staff</Link>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="hover:text-foreground">Hjælp på Discord</a>
         </div>
       </div>
