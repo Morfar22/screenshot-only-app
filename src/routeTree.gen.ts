@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as KomIGangRouteImport } from './routes/kom-i-gang'
+import { Route as ReglerRouteImport } from './routes/regler'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KomIGangRoute = KomIGangRouteImport.update({
+  id: '/kom-i-gang',
+  path: '/kom-i-gang',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReglerRoute = ReglerRouteImport.update({
+  id: '/regler',
+  path: '/regler',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/kom-i-gang': typeof KomIGangRoute
+  '/regler': typeof ReglerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/kom-i-gang': typeof KomIGangRoute
+  '/regler': typeof ReglerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/kom-i-gang': typeof KomIGangRoute
+  '/regler': typeof ReglerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/kom-i-gang' | '/regler'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/kom-i-gang' | '/regler'
+  id: '__root__' | '/' | '/kom-i-gang' | '/regler'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  KomIGangRoute: typeof KomIGangRoute
+  ReglerRoute: typeof ReglerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/kom-i-gang': {
+      id: '/kom-i-gang'
+      path: '/kom-i-gang'
+      fullPath: '/kom-i-gang'
+      preLoaderRoute: typeof KomIGangRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regler': {
+      id: '/regler'
+      path: '/regler'
+      fullPath: '/regler'
+      preLoaderRoute: typeof ReglerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  KomIGangRoute: KomIGangRoute,
+  ReglerRoute: ReglerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
