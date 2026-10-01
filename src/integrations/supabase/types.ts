@@ -14,7 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      whitelist_applications: {
+        Row: {
+          age: number
+          backstory: string
+          character_name: string
+          created_at: string
+          discord_name: string
+          id: string
+          read_rules: boolean
+          rp_experience: string | null
+          status: string
+        }
+        Insert: {
+          age: number
+          backstory: string
+          character_name: string
+          created_at?: string
+          discord_name: string
+          id?: string
+          read_rules: boolean
+          rp_experience?: string | null
+          status?: string
+        }
+        Update: {
+          age?: number
+          backstory?: string
+          character_name?: string
+          created_at?: string
+          discord_name?: string
+          id?: string
+          read_rules?: boolean
+          rp_experience?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
