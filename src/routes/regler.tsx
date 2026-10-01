@@ -166,7 +166,7 @@ function Rules() {
       </section>
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-12 lg:grid-cols-[240px_1fr] lg:px-8">
         <nav aria-label="Kategorier" className="lg:sticky lg:top-24 lg:self-start">
-          <ul className="flex gap-2 overflow-x-auto lg:flex-col">
+          <ul className="scrollbar-none flex gap-2 overflow-x-auto lg:flex-col">
             {sections.map((s) => (
               <li key={s.id}>
                 <a href={`#${s.id}`} className="block whitespace-nowrap rounded-sm border border-border px-4 py-2 text-sm text-muted-foreground hover:border-primary-glow hover:text-foreground lg:border-0 lg:border-l-2 lg:px-4">{s.title}</a>
