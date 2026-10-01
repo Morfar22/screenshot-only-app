@@ -1,5 +1,20 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1790897144085,
+      "tag": "0000_whitelist_applications",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790897192952,
+      "tag": "0001_remove_test_application",
+      "breakpoints": true
+    }
+  ]
 }

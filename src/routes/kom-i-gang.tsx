@@ -17,7 +17,7 @@ const steps = [
   { title: "Forbered dig", text: "Du skal bruge en lovlig kopi af GTA V, FiveM installeret og en fungerende mikrofon.", faq: { q: "Hvorfor kræves mikrofon?", a: "Rollespillet foregår primært via stemme i spillet." }, next: "Når FiveM virker, går du videre til Discord." },
   { title: "Bliv en del af Discord", text: "Discord er vores samlingspunkt for nyheder, ansøgninger og support.", action: { label: "Åbn Discord", href: DISCORD_URL }, next: "Herefter læser du reglerne." },
   { title: "Læs reglerne", text: "Reglerne beskriver rammerne for godt rollespil. Du bliver spurgt ind til dem i ansøgningen.", link: { label: "Læs reglerne", to: "/regler" as const }, next: "Så er du klar til at ansøge." },
-  { title: "Send en adgangsansøgning", text: "Nordisk RP bruger whitelist: en kort adgangsansøgning, hvor du fortæller lidt om dig selv og din karakteridé. Ansøgningen findes på Discord.", faq: { q: "Hvor lang tid tager det?", a: "Du får besked på Discord, når ansøgningen er behandlet." }, next: "Når du er godkendt, kan du forbinde." },
+  { title: "Send en adgangsansøgning", text: "Nordisk RP bruger whitelist: en kort adgangsansøgning, hvor du fortæller lidt om dig selv og din karakteridé.", link: { label: "Ansøg nu", to: "/ansog" as const }, faq: { q: "Hvor lang tid tager det?", a: "Du får besked på Discord, når ansøgningen er behandlet." }, next: "Når du er godkendt, kan du forbinde." },
   { title: "Forbind og skab din karakter", text: "Find Nordisk RP i FiveM-serverlisten, forbind og opret din karakter. Tag dig tid – den skal holde.", next: "Velkommen i byen. Er du i tvivl, så opret en supportsag på Discord." },
 ];
 

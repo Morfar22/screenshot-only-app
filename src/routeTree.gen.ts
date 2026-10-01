@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnsogRouteImport } from './routes/ansog'
 import { Route as KomIGangRouteImport } from './routes/kom-i-gang'
 import { Route as ReglerRouteImport } from './routes/regler'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnsogRoute = AnsogRouteImport.update({
+  id: '/ansog',
+  path: '/ansog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KomIGangRoute = KomIGangRouteImport.update({
@@ -31,30 +37,34 @@ const ReglerRoute = ReglerRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ansog': typeof AnsogRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ansog': typeof AnsogRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ansog': typeof AnsogRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/kom-i-gang' | '/regler'
+  fullPaths: '/' | '/ansog' | '/kom-i-gang' | '/regler'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/kom-i-gang' | '/regler'
-  id: '__root__' | '/' | '/kom-i-gang' | '/regler'
+  to: '/' | '/ansog' | '/kom-i-gang' | '/regler'
+  id: '__root__' | '/' | '/ansog' | '/kom-i-gang' | '/regler'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnsogRoute: typeof AnsogRoute
   KomIGangRoute: typeof KomIGangRoute
   ReglerRoute: typeof ReglerRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ansog': {
+      id: '/ansog'
+      path: '/ansog'
+      fullPath: '/ansog'
+      preLoaderRoute: typeof AnsogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kom-i-gang': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnsogRoute: AnsogRoute,
   KomIGangRoute: KomIGangRoute,
   ReglerRoute: ReglerRoute,
 }
