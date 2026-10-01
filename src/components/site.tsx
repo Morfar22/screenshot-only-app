@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import emblem from "@/assets/emblem.png";
 
-export const DISCORD_URL = "https://discord.gg/";
+export const DISCORD_URL = "https://discord.gg/rzjqNSN9xx";
 
 const nav = [
   { label: "Om Nordisk", to: "/", hash: "om" },
