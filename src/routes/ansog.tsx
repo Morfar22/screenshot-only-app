@@ -52,7 +52,7 @@ function Apply() {
     }
     setErrors({});
     setState("sending");
-    const { error } = await supabase.from("whitelist_applications").insert(parsed.data);
+    const { error } = await supabase.from("whitelist_applications").insert({ ...parsed.data, rp_experience: parsed.data.rp_experience ?? null });
     setState(error ? "error" : "done");
   }
 
