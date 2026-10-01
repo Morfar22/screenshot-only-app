@@ -46,9 +46,9 @@ export function SiteHeader() {
             <Link
               key={n.label}
               to={n.to}
-              hash={"hash" in n ? n.hash : undefined}
+              {...("hash" in n ? { hash: n.hash } : {})}
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              activeProps={"hash" in n ? undefined : { className: "text-foreground underline decoration-primary-glow decoration-2 underline-offset-8" }}
+              {...("hash" in n ? {} : { activeProps: { className: "text-foreground underline decoration-primary-glow decoration-2 underline-offset-8" } })}
             >
               {n.label}
             </Link>
@@ -67,7 +67,7 @@ export function SiteHeader() {
       {open && (
         <nav className="border-t border-border bg-background px-5 pb-6 lg:hidden" aria-label="Mobilmenu">
           {nav.map((n) => (
-            <Link key={n.label} to={n.to} hash={"hash" in n ? n.hash : undefined} onClick={() => setOpen(false)} className="block border-b border-border py-4 text-lg font-medium">
+            <Link key={n.label} to={n.to} {...("hash" in n ? { hash: n.hash } : {})} onClick={() => setOpen(false)} className="block border-b border-border py-4 text-lg font-medium">
               {n.label}
             </Link>
           ))}
