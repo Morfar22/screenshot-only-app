@@ -10,18 +10,30 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AnsogRouteImport } from './routes/ansog'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as KomIGangRouteImport } from './routes/kom-i-gang'
 import { Route as ReglerRouteImport } from './routes/regler'
+import { Route as AuthenticatedStaffRouteImport } from './routes/_authenticated/staff'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnsogRoute = AnsogRouteImport.update({
   id: '/ansog',
   path: '/ansog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KomIGangRoute = KomIGangRouteImport.update({
@@ -34,37 +46,59 @@ const ReglerRoute = ReglerRouteImport.update({
   path: '/regler',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedStaffRoute = AuthenticatedStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ansog': typeof AnsogRoute
+  '/auth': typeof AuthRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
+  '/staff': typeof AuthenticatedStaffRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ansog': typeof AnsogRoute
+  '/auth': typeof AuthRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
+  '/staff': typeof AuthenticatedStaffRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/ansog': typeof AnsogRoute
+  '/auth': typeof AuthRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
+  '/_authenticated/staff': typeof AuthenticatedStaffRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ansog' | '/kom-i-gang' | '/regler'
+  fullPaths: '/' | '/ansog' | '/auth' | '/kom-i-gang' | '/regler' | '/staff'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ansog' | '/kom-i-gang' | '/regler'
-  id: '__root__' | '/' | '/ansog' | '/kom-i-gang' | '/regler'
+  to: '/' | '/ansog' | '/auth' | '/kom-i-gang' | '/regler' | '/staff'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/ansog'
+    | '/auth'
+    | '/kom-i-gang'
+    | '/regler'
+    | '/_authenticated/staff'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AnsogRoute: typeof AnsogRoute
+  AuthRoute: typeof AuthRoute
   KomIGangRoute: typeof KomIGangRoute
   ReglerRoute: typeof ReglerRoute
 }
@@ -78,11 +112,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ansog': {
       id: '/ansog'
       path: '/ansog'
       fullPath: '/ansog'
       preLoaderRoute: typeof AnsogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kom-i-gang': {
@@ -99,12 +147,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReglerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/staff': {
+      id: '/_authenticated/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof AuthenticatedStaffRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedStaffRoute: typeof AuthenticatedStaffRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedStaffRoute: AuthenticatedStaffRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AnsogRoute: AnsogRoute,
+  AuthRoute: AuthRoute,
   KomIGangRoute: KomIGangRoute,
   ReglerRoute: ReglerRoute,
 }
