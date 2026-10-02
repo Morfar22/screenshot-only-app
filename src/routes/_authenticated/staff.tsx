@@ -54,7 +54,16 @@ function Staff() {
     navigate({ to: "/" });
   }
 
-  const apps = (data?.apps ?? []).filter((a) => a.status === tab);
+  const q = query.trim().toLowerCase();
+  const apps = (data?.apps ?? []).filter(
+    (a) =>
+      a.status === tab &&
+      (!q ||
+        a.character_name.toLowerCase().includes(q) ||
+        a.discord_name.toLowerCase().includes(q) ||
+        a.backstory.toLowerCase().includes(q) ||
+        (a.rp_experience ?? "").toLowerCase().includes(q)),
+  );
 
   return (
     <PageShell>
