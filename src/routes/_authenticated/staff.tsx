@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Check, X, RotateCcw, LogOut, Trash2, Plus } from "lucide-react";
 import { PageShell } from "@/components/site";
 import { supabase } from "@/integrations/supabase/client";
+import { IngamePanel } from "@/components/staff-ingame";
 
 export const Route = createFileRoute("/_authenticated/staff")({
   head: () => ({
@@ -107,6 +108,7 @@ function Staff() {
                   </article>
                 ))}
               </div>
+              <IngamePanel />
               <StatusPanel />
             </>
           )}
