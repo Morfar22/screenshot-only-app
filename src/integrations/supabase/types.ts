@@ -14,6 +14,95 @@ export type Database = {
   }
   public: {
     Tables: {
+      application_types: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          is_open: boolean
+          questions: Json
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          id?: string
+          is_open?: boolean
+          questions?: Json
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          is_open?: boolean
+          questions?: Json
+          title?: string
+        }
+        Relationships: []
+      }
+      fivem_app_keys: {
+        Row: {
+          api_key: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          api_key?: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          api_key?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      ingame_applications: {
+        Row: {
+          answers: Json
+          created_at: string
+          fivem_identifier: string
+          id: string
+          player_name: string
+          staff_note: string
+          status: string
+          type_id: string
+          updated_at: string
+        }
+        Insert: {
+          answers?: Json
+          created_at?: string
+          fivem_identifier: string
+          id?: string
+          player_name?: string
+          staff_note?: string
+          status?: string
+          type_id: string
+          updated_at?: string
+        }
+        Update: {
+          answers?: Json
+          created_at?: string
+          fivem_identifier?: string
+          id?: string
+          player_name?: string
+          staff_note?: string
+          status?: string
+          type_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ingame_applications_type_id_fkey"
+            columns: ["type_id"]
+            isOneToOne: false
+            referencedRelation: "application_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       maintenance_windows: {
         Row: {
           created_at: string

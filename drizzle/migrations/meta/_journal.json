@@ -36,6 +36,13 @@
       "when": 1790909721118,
       "tag": "0004_server_status_players",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790916411557,
+      "tag": "0005_fivem_application_types",
+      "breakpoints": true
     }
   ]
 }
