@@ -23,7 +23,6 @@ const field = "mt-2 w-full rounded-sm border border-border bg-background px-4 py
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"login" | "signup">("login");
   const [msg, setMsg] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -45,13 +44,9 @@ function AuthPage() {
     if (!email || password.length < 8) return setMsg("Skriv email og en adgangskode på mindst 8 tegn.");
     setBusy(true);
     setMsg(null);
-    const { error } =
-      mode === "login"
-        ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/auth` } });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
-    if (error) setMsg(mode === "login" ? "Forkert email eller adgangskode." : error.message);
-    else if (mode === "signup") setMsg("Tjek din email for at bekræfte kontoen.");
+    if (error) setMsg("Forkert email eller adgangskode.");
   }
 
   return (
@@ -59,7 +54,8 @@ function AuthPage() {
       <section className="pb-24 pt-32">
         <div className="mx-auto max-w-md px-5">
           <span className="eyebrow">Kun for staff</span>
-          <h1 className="mt-4 text-5xl font-extrabold uppercase">{mode === "login" ? "Log ind" : "Opret konto"}</h1>
+          <h1 className="mt-4 text-5xl font-extrabold uppercase">Log ind</h1>
+          <p className="mt-4 text-muted-foreground">Adgang til behandling af ansøgninger for godkendte staff-medlemmer.</p>
           <div className="engraved mt-10 space-y-5 rounded-sm bg-card p-8">
             <button
               type="button"
@@ -73,11 +69,9 @@ function AuthPage() {
               <label className="block text-sm font-semibold">Email<input name="email" type="email" className={field} /></label>
               <label className="block text-sm font-semibold">Adgangskode<input name="password" type="password" className={field} /></label>
               {msg && <p className="text-sm text-primary-glow">{msg}</p>}
-              <button type="submit" disabled={busy} className="btn-primary w-full justify-center">{busy ? "Vent…" : mode === "login" ? "Log ind" : "Opret konto"}</button>
+              <button type="submit" disabled={busy} className="btn-primary w-full justify-center">{busy ? "Logger ind…" : "Log ind"}</button>
             </form>
-            <button type="button" className="w-full text-sm text-muted-foreground underline" onClick={() => setMode(mode === "login" ? "signup" : "login")}>
-              {mode === "login" ? "Ingen konto? Opret en" : "Har du en konto? Log ind"}
-            </button>
+            <p className="text-center text-xs text-muted-foreground">Nye staff-konti oprettes af ledelsen.</p>
           </div>
         </div>
       </section>

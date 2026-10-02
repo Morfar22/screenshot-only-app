@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep generated website photography in `src/assets` and import it directly in routes, because these images are part of the app's permanent visual identity.

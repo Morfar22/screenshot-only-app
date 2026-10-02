@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { Check, X, RotateCcw, LogOut } from "lucide-react";
 import { PageShell } from "@/components/site";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -62,7 +63,7 @@ function Staff() {
               <span className="eyebrow">Staff</span>
               <h1 className="mt-4 text-5xl font-extrabold uppercase">Ansøgninger</h1>
             </div>
-            <button onClick={logout} className="btn-ghost">Log ud</button>
+            <button onClick={logout} className="btn-ghost"><LogOut className="h-4 w-4" /> Log ud</button>
           </div>
 
           {isLoading ? (
@@ -74,9 +75,9 @@ function Staff() {
             </div>
           ) : (
             <>
-              <div className="mt-10 flex gap-2">
+              <div className="scrollbar-none mt-10 flex gap-2 overflow-x-auto border-b border-border" role="tablist" aria-label="Ansøgningsstatus">
                 {tabs.map((t) => (
-                  <button key={t} onClick={() => setTab(t)} className={`rounded-sm border px-4 py-2 text-sm font-semibold capitalize ${tab === t ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground"}`}>
+                  <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)} className={`shrink-0 border-b-2 px-5 py-3 text-sm font-semibold capitalize ${tab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
                     {t} ({(data.apps ?? []).filter((a) => a.status === t).length})
                   </button>
                 ))}
@@ -99,9 +100,9 @@ function Staff() {
                       </>
                     )}
                     <div className="mt-5 flex flex-wrap gap-2">
-                      {a.status !== "godkendt" && <button onClick={() => setStatus(a.id, "godkendt")} className="btn-primary">Godkend</button>}
-                      {a.status !== "afvist" && <button onClick={() => setStatus(a.id, "afvist")} className="btn-ghost">Afvis</button>}
-                      {a.status !== "afventer" && <button onClick={() => setStatus(a.id, "afventer")} className="btn-ghost">Sæt til afventer</button>}
+                      {a.status !== "godkendt" && <button onClick={() => setStatus(a.id, "godkendt")} className="btn-primary"><Check className="h-4 w-4" /> Godkend</button>}
+                      {a.status !== "afvist" && <button onClick={() => setStatus(a.id, "afvist")} className="btn-ghost"><X className="h-4 w-4" /> Afvis</button>}
+                      {a.status !== "afventer" && <button onClick={() => setStatus(a.id, "afventer")} className="btn-ghost"><RotateCcw className="h-4 w-4" /> Sæt til afventer</button>}
                     </div>
                   </article>
                 ))}
