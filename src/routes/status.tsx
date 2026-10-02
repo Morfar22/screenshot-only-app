@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/site";
-import { Activity, CheckCircle2, Wrench, XCircle, CalendarClock } from "lucide-react";
+import { Activity, CheckCircle2, Wrench, XCircle, CalendarClock, Users } from "lucide-react";
 
 export const Route = createFileRoute("/status")({
   head: () => ({
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/status")({
   component: StatusPage,
 });
 
-type StatusRow = { status: "online" | "offline" | "vedligeholdelse"; message: string; updated_at: string };
+type StatusRow = { status: "online" | "offline" | "vedligeholdelse"; message: string; updated_at: string; players: number | null; max_players: number | null };
 type MaintenanceRow = { id: string; title: string; description: string; starts_at: string; ends_at: string };
 
 const STATUS_META = {
@@ -32,15 +33,27 @@ function formatWhen(iso: string) {
 }
 
 function StatusPage() {
+  const qc = useQueryClient();
   const statusQuery = useQuery({
     queryKey: ["server-status"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("server_status").select("status,message,updated_at").order("updated_at", { ascending: false }).limit(1).maybeSingle();
+      const { data, error } = await supabase.from("server_status").select("status,message,updated_at,players,max_players").order("updated_at", { ascending: false }).limit(1).maybeSingle();
       if (error) throw error;
       return data as StatusRow | null;
     },
     refetchInterval: 60_000,
   });
+
+  // Ping FiveM-serveren direkte, så status altid er frisk, når nogen kigger forbi.
+  useEffect(() => {
+    const check = () =>
+      fetch("/api/public/fivem-status")
+        .catch(() => {})
+        .finally(() => qc.invalidateQueries({ queryKey: ["server-status"] }));
+    check();
+    const id = setInterval(check, 60_000);
+    return () => clearInterval(id);
+  }, [qc]);
   const maintenanceQuery = useQuery({
     queryKey: ["maintenance-windows"],
     queryFn: async () => {

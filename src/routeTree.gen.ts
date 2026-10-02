@@ -17,6 +17,7 @@ import { Route as KomIGangRouteImport } from './routes/kom-i-gang'
 import { Route as ReglerRouteImport } from './routes/regler'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as AuthenticatedStaffRouteImport } from './routes/_authenticated/staff'
+import { Route as ApiPublicFivemStatusRouteImport } from './routes/api/public/fivem-status'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -57,6 +58,11 @@ const AuthenticatedStaffRoute = AuthenticatedStaffRouteImport.update({
   path: '/staff',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiPublicFivemStatusRoute = ApiPublicFivemStatusRouteImport.update({
+  id: '/api/public/fivem-status',
+  path: '/api/public/fivem-status',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/regler': typeof ReglerRoute
   '/status': typeof StatusRoute
   '/staff': typeof AuthenticatedStaffRoute
+  '/api/public/fivem-status': typeof ApiPublicFivemStatusRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/regler': typeof ReglerRoute
   '/status': typeof StatusRoute
   '/staff': typeof AuthenticatedStaffRoute
+  '/api/public/fivem-status': typeof ApiPublicFivemStatusRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,14 +94,29 @@ export interface FileRoutesById {
   '/regler': typeof ReglerRoute
   '/status': typeof StatusRoute
   '/_authenticated/staff': typeof AuthenticatedStaffRoute
+  '/api/public/fivem-status': typeof ApiPublicFivemStatusRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/ansog' | '/auth' | '/kom-i-gang' | '/regler' | '/status' | '/staff'
+    | '/'
+    | '/ansog'
+    | '/auth'
+    | '/kom-i-gang'
+    | '/regler'
+    | '/status'
+    | '/staff'
+    | '/api/public/fivem-status'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/ansog' | '/auth' | '/kom-i-gang' | '/regler' | '/status' | '/staff'
+    | '/'
+    | '/ansog'
+    | '/auth'
+    | '/kom-i-gang'
+    | '/regler'
+    | '/status'
+    | '/staff'
+    | '/api/public/fivem-status'
   id:
     | '__root__'
     | '/'
@@ -104,6 +127,7 @@ export interface FileRouteTypes {
     | '/regler'
     | '/status'
     | '/_authenticated/staff'
+    | '/api/public/fivem-status'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -114,6 +138,7 @@ export interface RootRouteChildren {
   KomIGangRoute: typeof KomIGangRoute
   ReglerRoute: typeof ReglerRoute
   StatusRoute: typeof StatusRoute
+  ApiPublicFivemStatusRoute: typeof ApiPublicFivemStatusRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -174,6 +199,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStaffRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/fivem-status': {
+      id: '/api/public/fivem-status'
+      path: '/api/public/fivem-status'
+      fullPath: '/api/public/fivem-status'
+      preLoaderRoute: typeof ApiPublicFivemStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -196,6 +228,7 @@ const rootRouteChildren: RootRouteChildren = {
   KomIGangRoute: KomIGangRoute,
   ReglerRoute: ReglerRoute,
   StatusRoute: StatusRoute,
+  ApiPublicFivemStatusRoute: ApiPublicFivemStatusRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
