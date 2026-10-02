@@ -107,6 +107,7 @@ function Staff() {
                   </article>
                 ))}
               </div>
+              <StatusPanel />
             </>
           )}
         </div>
