@@ -15,6 +15,7 @@ import { Route as AnsogRouteImport } from './routes/ansog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as KomIGangRouteImport } from './routes/kom-i-gang'
 import { Route as ReglerRouteImport } from './routes/regler'
+import { Route as StatusRouteImport } from './routes/status'
 import { Route as AuthenticatedStaffRouteImport } from './routes/_authenticated/staff'
 
 const IndexRoute = IndexRouteImport.update({
@@ -46,6 +47,11 @@ const ReglerRoute = ReglerRouteImport.update({
   path: '/regler',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StatusRoute = StatusRouteImport.update({
+  id: '/status',
+  path: '/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedStaffRoute = AuthenticatedStaffRouteImport.update({
   id: '/staff',
   path: '/staff',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
+  '/status': typeof StatusRoute
   '/staff': typeof AuthenticatedStaffRoute
 }
 export interface FileRoutesByTo {
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
+  '/status': typeof StatusRoute
   '/staff': typeof AuthenticatedStaffRoute
 }
 export interface FileRoutesById {
@@ -76,13 +84,16 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
+  '/status': typeof StatusRoute
   '/_authenticated/staff': typeof AuthenticatedStaffRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ansog' | '/auth' | '/kom-i-gang' | '/regler' | '/staff'
+  fullPaths:
+    '/' | '/ansog' | '/auth' | '/kom-i-gang' | '/regler' | '/status' | '/staff'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ansog' | '/auth' | '/kom-i-gang' | '/regler' | '/staff'
+  to:
+    '/' | '/ansog' | '/auth' | '/kom-i-gang' | '/regler' | '/status' | '/staff'
   id:
     | '__root__'
     | '/'
@@ -91,6 +102,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/kom-i-gang'
     | '/regler'
+    | '/status'
     | '/_authenticated/staff'
   fileRoutesById: FileRoutesById
 }
@@ -101,6 +113,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   KomIGangRoute: typeof KomIGangRoute
   ReglerRoute: typeof ReglerRoute
+  StatusRoute: typeof StatusRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -147,6 +160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReglerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/status': {
+      id: '/status'
+      path: '/status'
+      fullPath: '/status'
+      preLoaderRoute: typeof StatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/staff': {
       id: '/_authenticated/staff'
       path: '/staff'
@@ -175,6 +195,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   KomIGangRoute: KomIGangRoute,
   ReglerRoute: ReglerRoute,
+  StatusRoute: StatusRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
