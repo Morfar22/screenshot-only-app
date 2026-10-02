@@ -6,6 +6,7 @@ import { Check, X, RotateCcw, LogOut, Trash2, Plus } from "lucide-react";
 import { PageShell } from "@/components/site";
 import { supabase } from "@/integrations/supabase/client";
 import { IngamePanel } from "@/components/staff-ingame";
+import { AiSummaryPanel } from "@/components/staff-ai-summary";
 import { setWhitelistStatus } from "@/lib/applications.functions";
 
 export const Route = createFileRoute("/_authenticated/staff")({
@@ -129,6 +130,7 @@ function Staff() {
                   </article>
                 ))}
               </div>
+              <AiSummaryPanel />
               <IngamePanel />
               <StatusPanel />
             </>

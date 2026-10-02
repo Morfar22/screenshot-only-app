@@ -125,3 +125,13 @@ export const setWhitelistStatus = createServerFn({ method: "POST" })
     }
     return { ok: true };
   });
+
+export const summarizeApplicationText = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ text: z.string().trim().min(20).max(20000) }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { data: isStaff } = await context.supabase.rpc("is_staff", { _user_id: context.userId });
+    if (!isStaff) throw new Error("Kun staff har adgang");
+    const { summarizeApplication } = await import("./ai-summary.server");
+    return { summary: await summarizeApplication(data.text) };
+  });
