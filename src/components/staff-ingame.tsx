@@ -22,6 +22,7 @@ export function IngamePanel() {
 function IngameApplications() {
   const qc = useQueryClient();
   const [tab, setTab] = useState<Status>("afventer");
+  const [query, setQuery] = useState("");
   const { data } = useQuery({
     queryKey: ["staff-ingame-apps"],
     queryFn: async () => {
@@ -37,7 +38,18 @@ function IngameApplications() {
     await supabase.from("ingame_applications").update({ status, updated_at: new Date().toISOString() }).eq("id", id);
     qc.invalidateQueries({ queryKey: ["staff-ingame-apps"] });
   }
-  const list = (data ?? []).filter((a) => a.status === tab);
+  const q = query.trim().toLowerCase();
+  const list = (data ?? []).filter(
+    (a) =>
+      a.status === tab &&
+      (!q ||
+        a.player_name.toLowerCase().includes(q) ||
+        a.fivem_identifier.toLowerCase().includes(q) ||
+        ((a.application_types as { title: string } | null)?.title ?? "").toLowerCase().includes(q) ||
+        ((a.answers as { question: string; answer: string }[]) ?? []).some(
+          (x) => x.question.toLowerCase().includes(q) || x.answer.toLowerCase().includes(q),
+        )),
+  );
   return (
     <div className="mt-6">
       <div className="scrollbar-none flex gap-2 overflow-x-auto border-b border-border" role="tablist">
