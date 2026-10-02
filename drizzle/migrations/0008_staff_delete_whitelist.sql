@@ -1,0 +1,1 @@
+CREATE POLICY "Staff sletter ansøgninger" ON public.whitelist_applications FOR DELETE TO authenticated USING (is_staff(auth.uid()));
