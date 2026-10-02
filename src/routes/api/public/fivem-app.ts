@@ -90,6 +90,9 @@ export const Route = createFileRoute("/api/public/fivem-app")({
           console.error("fivem-app insert", error);
           return json({ error: "Kunne ikke gemme ansøgningen" }, 500);
         }
+        const { data: t } = await db.from("application_types").select("title").eq("id", typeId).maybeSingle();
+        const { sendWebhook, newApplicationEmbed } = await import("@/lib/discord-webhook.server");
+        await sendWebhook("staff", newApplicationEmbed({ title: t?.title ?? "Ansøgning", name: playerName, source: "fivem", answers }));
         return json({ ok: true }, 201);
       },
     },
