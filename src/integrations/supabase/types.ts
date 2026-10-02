@@ -44,19 +44,25 @@ export type Database = {
       server_status: {
         Row: {
           id: string
+          max_players: number | null
           message: string
+          players: number | null
           status: string
           updated_at: string
         }
         Insert: {
           id?: string
+          max_players?: number | null
           message?: string
+          players?: number | null
           status?: string
           updated_at?: string
         }
         Update: {
           id?: string
+          max_players?: number | null
           message?: string
+          players?: number | null
           status?: string
           updated_at?: string
         }

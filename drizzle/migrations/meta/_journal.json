@@ -29,6 +29,13 @@
       "when": 1790906503255,
       "tag": "0003_server_status_page",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790909721118,
+      "tag": "0004_server_status_players",
+      "breakpoints": true
     }
   ]
 }

@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/site";
-import { Activity, CheckCircle2, Wrench, XCircle, CalendarClock } from "lucide-react";
+import { Activity, CheckCircle2, Wrench, XCircle, CalendarClock, Users } from "lucide-react";
 
 export const Route = createFileRoute("/status")({
   head: () => ({
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/status")({
   component: StatusPage,
 });
 
-type StatusRow = { status: "online" | "offline" | "vedligeholdelse"; message: string; updated_at: string };
+type StatusRow = { status: "online" | "offline" | "vedligeholdelse"; message: string; updated_at: string; players: number | null; max_players: number | null };
 type MaintenanceRow = { id: string; title: string; description: string; starts_at: string; ends_at: string };
 
 const STATUS_META = {
@@ -32,15 +33,27 @@ function formatWhen(iso: string) {
 }
 
 function StatusPage() {
+  const qc = useQueryClient();
   const statusQuery = useQuery({
     queryKey: ["server-status"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("server_status").select("status,message,updated_at").order("updated_at", { ascending: false }).limit(1).maybeSingle();
+      const { data, error } = await supabase.from("server_status").select("status,message,updated_at,players,max_players").order("updated_at", { ascending: false }).limit(1).maybeSingle();
       if (error) throw error;
       return data as StatusRow | null;
     },
     refetchInterval: 60_000,
   });
+
+  // Ping FiveM-serveren direkte, så status altid er frisk, når nogen kigger forbi.
+  useEffect(() => {
+    const check = () =>
+      fetch("/api/public/fivem-status")
+        .catch(() => {})
+        .finally(() => qc.invalidateQueries({ queryKey: ["server-status"] }));
+    check();
+    const id = setInterval(check, 60_000);
+    return () => clearInterval(id);
+  }, [qc]);
   const maintenanceQuery = useQuery({
     queryKey: ["maintenance-windows"],
     queryFn: async () => {
@@ -82,8 +95,14 @@ function StatusPage() {
                 <p className="text-muted-foreground">{meta.text}</p>
               </div>
             </div>
+            {current.players != null && current.max_players != null && current.status !== "offline" && (
+              <p className="mt-5 flex items-center gap-2 border-t border-border pt-5 font-display text-2xl font-bold uppercase tracking-wide">
+                <Users className="h-5 w-5 text-primary-glow" aria-hidden />
+                {current.players} / {current.max_players} spillere online
+              </p>
+            )}
             {current.message && <p className="mt-5 border-t border-border pt-5 text-muted-foreground">{current.message}</p>}
-            <p className="mt-4 text-xs text-muted-foreground">Opdateret {formatWhen(current.updated_at)}</p>
+            <p className="mt-4 text-xs text-muted-foreground">Sidst tjekket {formatWhen(current.updated_at)}</p>
           </div>
         )}
 
@@ -113,7 +132,7 @@ function StatusPage() {
 
         <div className="mt-16 flex items-center gap-3 text-sm text-muted-foreground">
           <Activity className="h-4 w-4" aria-hidden />
-          <p>Siden opdaterer sig selv hvert minut.</p>
+          <p>Statussen tjekkes direkte mod spilserveren og opdaterer sig selv hvert minut.</p>
         </div>
       </section>
     </PageShell>
