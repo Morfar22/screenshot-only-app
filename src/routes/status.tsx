@@ -95,8 +95,14 @@ function StatusPage() {
                 <p className="text-muted-foreground">{meta.text}</p>
               </div>
             </div>
+            {current.players != null && current.max_players != null && current.status !== "offline" && (
+              <p className="mt-5 flex items-center gap-2 border-t border-border pt-5 font-display text-2xl font-bold uppercase tracking-wide">
+                <Users className="h-5 w-5 text-primary-glow" aria-hidden />
+                {current.players} / {current.max_players} spillere online
+              </p>
+            )}
             {current.message && <p className="mt-5 border-t border-border pt-5 text-muted-foreground">{current.message}</p>}
-            <p className="mt-4 text-xs text-muted-foreground">Opdateret {formatWhen(current.updated_at)}</p>
+            <p className="mt-4 text-xs text-muted-foreground">Sidst tjekket {formatWhen(current.updated_at)}</p>
           </div>
         )}
 
@@ -126,7 +132,7 @@ function StatusPage() {
 
         <div className="mt-16 flex items-center gap-3 text-sm text-muted-foreground">
           <Activity className="h-4 w-4" aria-hidden />
-          <p>Siden opdaterer sig selv hvert minut.</p>
+          <p>Statussen tjekkes direkte mod spilserveren og opdaterer sig selv hvert minut.</p>
         </div>
       </section>
     </PageShell>
