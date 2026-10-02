@@ -93,6 +93,13 @@ function Staff() {
                   </button>
                 ))}
               </div>
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Søg på karakter, Discord-navn eller tekst…"
+                aria-label="Søg i whitelist-ansøgninger"
+                className="mt-4 w-full rounded-sm border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary-glow focus:outline-none"
+              />
               <div className="mt-6 space-y-4">
                 {apps.length === 0 && <p className="text-muted-foreground">Ingen ansøgninger her.</p>}
                 {apps.map((a) => (
