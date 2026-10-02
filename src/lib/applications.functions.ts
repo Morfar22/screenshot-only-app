@@ -68,3 +68,60 @@ export const setApplicationStatus = createServerFn({ method: "POST" })
     }
     return { ok: true };
   });
+
+const whitelistSchema = z.object({
+  discord_name: z.string().trim().min(2).max(64),
+  age: z.number().int().min(13).max(99),
+  character_name: z.string().trim().min(2).max(80),
+  backstory: z.string().trim().min(50).max(4000),
+  rp_experience: z.string().trim().max(2000).optional(),
+  read_rules: z.literal(true),
+});
+
+export const submitWhitelistApplication = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => whitelistSchema.parse(d))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase.from("whitelist_applications").insert({
+      ...data, rp_experience: data.rp_experience ?? null, user_id: context.userId,
+    });
+    if (error) throw new Error("Kunne ikke gemme ansøgningen");
+    const { sendWebhook, newApplicationEmbed } = await import("./discord-webhook.server");
+    await sendWebhook("staff", newApplicationEmbed({
+      title: "Whitelist", name: data.character_name, source: "web",
+      answers: [
+        { question: "Discord-navn", answer: data.discord_name },
+        { question: "Alder", answer: String(data.age) },
+        { question: "Baggrundshistorie", answer: data.backstory },
+        ...(data.rp_experience ? [{ question: "RP-erfaring", answer: data.rp_experience }] : []),
+      ],
+    }));
+    return { ok: true };
+  });
+
+export const setWhitelistStatus = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ id: z.string().uuid(), status: z.enum(["afventer", "godkendt", "afvist"]) }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { data: staff } = await context.supabase.rpc("is_staff", { _user_id: context.userId });
+    if (!staff) throw new Error("Forbidden");
+    const { data: row, error } = await context.supabase
+      .from("whitelist_applications")
+      .update({ status: data.status })
+      .eq("id", data.id)
+      .select("character_name,user_id")
+      .single();
+    if (error) throw new Error("Kunne ikke opdatere");
+    if (data.status !== "afventer") {
+      let discordId: string | null = null;
+      if (row.user_id) {
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        const { data: u } = await supabaseAdmin.auth.admin.getUserById(row.user_id);
+        const ident = u.user?.identities?.find((i) => i.provider === "discord");
+        discordId = (ident?.identity_data?.["provider_id"] as string) ?? ident?.id ?? null;
+      }
+      const { sendWebhook, decisionEmbed } = await import("./discord-webhook.server");
+      await sendWebhook("results", decisionEmbed({ title: "Whitelist", name: row.character_name, status: data.status, discordId }));
+    }
+    return { ok: true };
+  });

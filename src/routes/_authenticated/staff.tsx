@@ -1,10 +1,12 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Check, X, RotateCcw, LogOut, Trash2, Plus } from "lucide-react";
 import { PageShell } from "@/components/site";
 import { supabase } from "@/integrations/supabase/client";
 import { IngamePanel } from "@/components/staff-ingame";
+import { setWhitelistStatus } from "@/lib/applications.functions";
 
 export const Route = createFileRoute("/_authenticated/staff")({
   head: () => ({
@@ -43,8 +45,10 @@ function Staff() {
     },
   });
 
+  const updateStatus = useServerFn(setWhitelistStatus);
+
   async function setStatus(id: string, status: Status) {
-    await supabase.from("whitelist_applications").update({ status }).eq("id", id);
+    await updateStatus({ data: { id, status } });
     qc.invalidateQueries({ queryKey: ["staff-data"] });
   }
 
