@@ -1,7 +1,7 @@
 # Roadmap
 
-- [ ] Skab og indsæt en sammenhængende serie originale billeder
-- [ ] Gennemarbejd forside, navigation og fælles visuel identitet
-- [ ] Forbedr guide, ansøgning, login og staff-visning
-- [ ] Ensret metadata og tilgængelighed på alle indholdssider
-- [ ] Test centrale flows på mobil og computer
+- [x] Skab og indsæt en sammenhængende serie originale billeder
+- [x] Gennemarbejd forside, navigation og fælles visuel identitet
+- [x] Forbedr guide, ansøgning, login og staff-visning
+- [x] Ensret metadata og tilgængelighed på alle indholdssider
+- [x] Test centrale flows på mobil og computer
