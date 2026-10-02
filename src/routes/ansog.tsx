@@ -90,10 +90,12 @@ function Apply() {
     }
     setErrors({});
     setState("sending");
-    const { error } = await supabase
-      .from("whitelist_applications")
-      .insert({ ...parsed.data, rp_experience: parsed.data.rp_experience ?? null, user_id: userId });
-    setState(error ? "error" : "done");
+    try {
+      await submit({ data: parsed.data });
+      setState("done");
+    } catch {
+      setState("error");
+    }
   }
 
   const Err = ({ k }: { k: string }) => (errors[k] ? <p className="mt-1 text-sm text-primary-glow">{errors[k]}</p> : null);
