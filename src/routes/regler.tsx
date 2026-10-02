@@ -10,12 +10,14 @@ export const Route = createFileRoute("/regler")({
       { name: "description", content: "Den officielle, søgbare regeloversigt for Nordisk RP – 99 regler i ni kategorier." },
       { property: "og:title", content: "Regler — Nordisk RP" },
       { property: "og:description", content: "Find alle Nordisk RP-regler samlet i ni overskuelige kategorier." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Rules,
 });
 
-const UPDATED = "1. oktober 2026";
+const UPDATED = "2. oktober 2026";
 
 type Rule = { id: string; title: string; text: string[] };
 
@@ -160,7 +162,7 @@ function Rules() {
           <label className="engraved mt-8 flex max-w-xl items-center gap-3 rounded-sm bg-card px-4">
             <Search className="h-4 w-4 text-muted-foreground" aria-hidden />
             <span className="sr-only">Søg i reglerne</span>
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Søg i reglerne…" className="h-12 w-full bg-transparent outline-none placeholder:text-muted-foreground" />
+            <input aria-label="Søg i reglerne" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Søg i reglerne…" className="h-12 w-full bg-transparent outline-none placeholder:text-muted-foreground" />
           </label>
         </div>
       </section>
