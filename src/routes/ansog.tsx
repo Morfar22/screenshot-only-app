@@ -1,10 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { PageShell, DISCORD_URL } from "@/components/site";
 import { ArrowRight, CheckCircle2, Clock, XCircle, LogIn } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { submitWhitelistApplication } from "@/lib/applications.functions";
 
 export const Route = createFileRoute("/ansog")({
   head: () => ({
