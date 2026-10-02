@@ -45,8 +45,10 @@ function Staff() {
     },
   });
 
+  const updateStatus = useServerFn(setWhitelistStatus);
+
   async function setStatus(id: string, status: Status) {
-    await supabase.from("whitelist_applications").update({ status }).eq("id", id);
+    await updateStatus({ data: { id, status } });
     qc.invalidateQueries({ queryKey: ["staff-data"] });
   }
 

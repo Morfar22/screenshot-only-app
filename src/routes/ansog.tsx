@@ -42,6 +42,7 @@ function Apply() {
   const [loading, setLoading] = useState(true);
   const [existing, setExisting] = useState<Existing | null>(null);
   const [reapply, setReapply] = useState(false);
+  const submit = useServerFn(submitWhitelistApplication);
 
   useEffect(() => {
     let active = true;
