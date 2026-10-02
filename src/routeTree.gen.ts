@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AnsogRouteImport } from './routes/ansog'
+import { Route as AnsogningerRouteImport } from './routes/ansogninger'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as KomIGangRouteImport } from './routes/kom-i-gang'
 import { Route as ReglerRouteImport } from './routes/regler'
@@ -32,6 +33,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AnsogRoute = AnsogRouteImport.update({
   id: '/ansog',
   path: '/ansog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnsogningerRoute = AnsogningerRouteImport.update({
+  id: '/ansogninger',
+  path: '/ansogninger',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -73,6 +79,7 @@ const ApiPublicFivemStatusRoute = ApiPublicFivemStatusRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ansog': typeof AnsogRoute
+  '/ansogninger': typeof AnsogningerRoute
   '/auth': typeof AuthRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
@@ -84,6 +91,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ansog': typeof AnsogRoute
+  '/ansogninger': typeof AnsogningerRoute
   '/auth': typeof AuthRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/ansog': typeof AnsogRoute
+  '/ansogninger': typeof AnsogningerRoute
   '/auth': typeof AuthRoute
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/ansog'
+    | '/ansogninger'
     | '/auth'
     | '/kom-i-gang'
     | '/regler'
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/ansog'
+    | '/ansogninger'
     | '/auth'
     | '/kom-i-gang'
     | '/regler'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/ansog'
+    | '/ansogninger'
     | '/auth'
     | '/kom-i-gang'
     | '/regler'
@@ -146,6 +158,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AnsogRoute: typeof AnsogRoute
+  AnsogningerRoute: typeof AnsogningerRoute
   AuthRoute: typeof AuthRoute
   KomIGangRoute: typeof KomIGangRoute
   ReglerRoute: typeof ReglerRoute
@@ -175,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/ansog'
       fullPath: '/ansog'
       preLoaderRoute: typeof AnsogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ansogninger': {
+      id: '/ansogninger'
+      path: '/ansogninger'
+      fullPath: '/ansogninger'
+      preLoaderRoute: typeof AnsogningerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -244,6 +264,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AnsogRoute: AnsogRoute,
+  AnsogningerRoute: AnsogningerRoute,
   AuthRoute: AuthRoute,
   KomIGangRoute: KomIGangRoute,
   ReglerRoute: ReglerRoute,

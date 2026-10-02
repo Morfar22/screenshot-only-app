@@ -43,6 +43,13 @@
       "when": 1790916411557,
       "tag": "0005_fivem_application_types",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790927810214,
+      "tag": "0006_web_applications",
+      "breakpoints": true
     }
   ]
 }

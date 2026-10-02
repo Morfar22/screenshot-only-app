@@ -66,6 +66,7 @@ export type Database = {
           fivem_identifier: string
           id: string
           player_name: string
+          source: string
           staff_note: string
           status: string
           type_id: string
@@ -77,6 +78,7 @@ export type Database = {
           fivem_identifier: string
           id?: string
           player_name?: string
+          source?: string
           staff_note?: string
           status?: string
           type_id: string
@@ -88,6 +90,7 @@ export type Database = {
           fivem_identifier?: string
           id?: string
           player_name?: string
+          source?: string
           staff_note?: string
           status?: string
           type_id?: string

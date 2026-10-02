@@ -10,6 +10,7 @@ const nav = [
   { label: "Livet i byen", to: "/", hash: "byen" },
   { label: "Regler", to: "/regler" },
   { label: "Kom i gang", to: "/kom-i-gang" },
+  { label: "Ansøgninger", to: "/ansogninger" },
   { label: "Status", to: "/status" },
 ] as const;
 

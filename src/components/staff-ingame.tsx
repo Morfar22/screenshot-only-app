@@ -28,7 +28,7 @@ function IngameApplications() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("ingame_applications")
-        .select("id,player_name,fivem_identifier,answers,status,created_at,application_types(title)")
+        .select("id,player_name,fivem_identifier,answers,status,source,created_at,application_types(title)")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data ?? [];
@@ -59,13 +59,23 @@ function IngameApplications() {
           </button>
         ))}
       </div>
+      <input
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Søg på spiller, type eller svar…"
+        aria-label="Søg i ansøgninger"
+        className="mt-4 w-full rounded-sm border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary-glow focus:outline-none"
+      />
       <div className="mt-6 space-y-4">
         {list.length === 0 && <p className="text-muted-foreground">Ingen ansøgninger her.</p>}
         {list.map((a) => (
           <article key={a.id} className="engraved rounded-sm bg-card p-6">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <h3 className="text-2xl font-bold">{(a.application_types as { title: string } | null)?.title ?? "Ansøgning"}</h3>
-              <span className="text-sm text-muted-foreground">{new Date(a.created_at).toLocaleString("da-DK")}</span>
+              <span className="flex items-center gap-3 text-sm text-muted-foreground">
+                <span className="rounded-sm border border-border px-2 py-0.5 text-xs font-semibold uppercase tracking-wider">{a.source === "web" ? "Hjemmeside" : "I spillet"}</span>
+                {new Date(a.created_at).toLocaleString("da-DK")}
+              </span>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">Spiller: <span className="text-foreground">{a.player_name || "Ukendt"}</span> · <span className="break-all">{a.fivem_identifier}</span></p>
             {((a.answers as { question: string; answer: string }[]) ?? []).map((x, i) => (
