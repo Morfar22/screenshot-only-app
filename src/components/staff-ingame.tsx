@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, X, RotateCcw, Plus, Trash2, Eye, EyeOff, Copy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useServerFn } from "@tanstack/react-start";
+import { setApplicationStatus } from "@/lib/applications.functions";
 
 type Question = { label: string; required: boolean; long: boolean };
 type Status = "afventer" | "godkendt" | "afvist";
@@ -34,8 +36,9 @@ function IngameApplications() {
       return data ?? [];
     },
   });
+  const updateStatus = useServerFn(setApplicationStatus);
   async function setStatus(id: string, status: Status) {
-    await supabase.from("ingame_applications").update({ status, updated_at: new Date().toISOString() }).eq("id", id);
+    try { await updateStatus({ data: { id, status } }); } catch (e) { alert(e instanceof Error ? e.message : "Fejl"); }
     qc.invalidateQueries({ queryKey: ["staff-ingame-apps"] });
   }
   const q = query.trim().toLowerCase();
