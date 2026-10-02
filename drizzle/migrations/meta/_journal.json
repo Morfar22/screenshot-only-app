@@ -50,6 +50,13 @@
       "when": 1790927810214,
       "tag": "0006_web_applications",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790928033887,
+      "tag": "0007_applicant_accounts",
+      "breakpoints": true
     }
   ]
 }
