@@ -42,7 +42,7 @@ export async function summarizeApplication(text: string, signal?: AbortSignal) {
     model: provider.responses("openai/gpt-6-astra"),
     system: SYSTEM,
     prompt: `Ansøgning:\n\n${text}`,
-    abortSignal: signal,
+    ...(signal ? { abortSignal: signal } : {}),
     onError: ({ error }) => { streamError = error; },
     providerOptions: {
       openai: {
