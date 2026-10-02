@@ -53,6 +53,13 @@ function Staff() {
     qc.invalidateQueries({ queryKey: ["staff-data"] });
   }
 
+  async function deleteApp(id: string, name: string) {
+    if (!window.confirm(`Slet ansøgningen fra ${name}? Det kan ikke fortrydes.`)) return;
+    const { error } = await supabase.from("whitelist_applications").delete().eq("id", id);
+    if (error) throw error;
+    qc.invalidateQueries({ queryKey: ["staff-data"] });
+  }
+
   async function logout() {
     await supabase.auth.signOut();
     qc.clear();
@@ -126,6 +133,7 @@ function Staff() {
                       {a.status !== "godkendt" && <button onClick={() => setStatus(a.id, "godkendt")} className="btn-primary"><Check className="h-4 w-4" /> Godkend</button>}
                       {a.status !== "afvist" && <button onClick={() => setStatus(a.id, "afvist")} className="btn-ghost"><X className="h-4 w-4" /> Afvis</button>}
                       {a.status !== "afventer" && <button onClick={() => setStatus(a.id, "afventer")} className="btn-ghost"><RotateCcw className="h-4 w-4" /> Sæt til afventer</button>}
+                      <button onClick={() => deleteApp(a.id, a.character_name)} className="btn-ghost text-destructive"><Trash2 className="h-4 w-4" /> Slet</button>
                     </div>
                   </article>
                 ))}
