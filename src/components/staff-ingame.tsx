@@ -22,6 +22,7 @@ export function IngamePanel() {
 function IngameApplications() {
   const qc = useQueryClient();
   const [tab, setTab] = useState<Status>("afventer");
+  const [query, setQuery] = useState("");
   const { data } = useQuery({
     queryKey: ["staff-ingame-apps"],
     queryFn: async () => {

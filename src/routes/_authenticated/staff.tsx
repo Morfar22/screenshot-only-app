@@ -28,6 +28,7 @@ function Staff() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [tab, setTab] = useState<Status>("afventer");
+  const [query, setQuery] = useState("");
 
   const { data, isLoading } = useQuery({
     queryKey: ["staff-data"],
