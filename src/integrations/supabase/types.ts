@@ -192,6 +192,7 @@ export type Database = {
           read_rules: boolean
           rp_experience: string | null
           status: string
+          user_id: string | null
         }
         Insert: {
           age: number
@@ -203,6 +204,7 @@ export type Database = {
           read_rules: boolean
           rp_experience?: string | null
           status?: string
+          user_id?: string | null
         }
         Update: {
           age?: number
@@ -214,6 +216,7 @@ export type Database = {
           read_rules?: boolean
           rp_experience?: string | null
           status?: string
+          user_id?: string | null
         }
         Relationships: []
       }
