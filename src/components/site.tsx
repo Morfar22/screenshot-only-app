@@ -10,6 +10,7 @@ const nav = [
   { label: "Livet i byen", to: "/", hash: "byen" },
   { label: "Regler", to: "/regler" },
   { label: "Kom i gang", to: "/kom-i-gang" },
+  { label: "Status", to: "/status" },
 ] as const;
 
 function Wordmark() {
@@ -90,6 +91,7 @@ export function SiteFooter() {
         <div className="flex gap-6 text-sm text-muted-foreground">
           <Link to="/regler" className="hover:text-foreground">Regler</Link>
           <Link to="/kom-i-gang" className="hover:text-foreground">Kom i gang</Link>
+          <Link to="/status" className="hover:text-foreground">Status</Link>
           <Link to="/staff" className="hover:text-foreground">Staff</Link>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="hover:text-foreground">Hjælp på Discord</a>
         </div>
