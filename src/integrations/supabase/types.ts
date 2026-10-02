@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      maintenance_windows: {
+        Row: {
+          created_at: string
+          description: string
+          ends_at: string
+          id: string
+          starts_at: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          ends_at: string
+          id?: string
+          starts_at: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          ends_at?: string
+          id?: string
+          starts_at?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      server_status: {
+        Row: {
+          id: string
+          message: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          message?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          message?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
