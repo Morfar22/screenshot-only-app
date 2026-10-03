@@ -93,7 +93,7 @@ export function SiteFooter() {
           <Link to="/regler" className="hover:text-foreground">Regler</Link>
           <Link to="/kom-i-gang" className="hover:text-foreground">Kom i gang</Link>
           <Link to="/status" className="hover:text-foreground">Status</Link>
-          <Link to="/staff" className="hover:text-foreground">Staff</Link>
+          <Link to="/admin" className="hover:text-foreground">Staff</Link>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="hover:text-foreground">Hjælp på Discord</a>
         </div>
       </div>

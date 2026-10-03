@@ -1,3 +1,4 @@
+import { logAction, deleteApplication } from "@/lib/admin.functions";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, X, RotateCcw, Plus, Trash2, Eye, EyeOff, Copy } from "lucide-react";
@@ -21,7 +22,7 @@ export function IngamePanel() {
   );
 }
 
-function IngameApplications() {
+export function IngameApplications() {
   const qc = useQueryClient();
   const [tab, setTab] = useState<Status>("afventer");
   const [query, setQuery] = useState("");
@@ -91,6 +92,7 @@ function IngameApplications() {
               {a.status !== "godkendt" && <button onClick={() => setStatus(a.id, "godkendt")} className="btn-primary"><Check className="h-4 w-4" /> Godkend</button>}
               {a.status !== "afvist" && <button onClick={() => setStatus(a.id, "afvist")} className="btn-ghost"><X className="h-4 w-4" /> Afvis</button>}
               {a.status !== "afventer" && <button onClick={() => setStatus(a.id, "afventer")} className="btn-ghost"><RotateCcw className="h-4 w-4" /> Sæt til afventer</button>}
+              <button onClick={async () => { if (!confirm(`Slet ansøgningen fra ${a.player_name || "ukendt"}? Det kan ikke fortrydes.`)) return; try { await deleteApplication({ data: { id: a.id, kind: "ingame", name: a.player_name } }); } catch (e) { alert(e instanceof Error ? e.message : "Fejl"); } qc.invalidateQueries({ queryKey: ["staff-ingame-apps"] }); }} className="btn-ghost text-destructive"><Trash2 className="h-4 w-4" /> Slet</button>
             </div>
           </article>
         ))}
@@ -99,7 +101,7 @@ function IngameApplications() {
   );
 }
 
-function TypeEditor() {
+export function TypeEditor() {
   const qc = useQueryClient();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -119,6 +121,7 @@ function TypeEditor() {
     const qs = questions.filter((q) => q.label.trim()).map((q) => ({ ...q, label: q.label.trim() }));
     if (!title.trim() || qs.length === 0) return;
     await supabase.from("application_types").insert({ title: title.trim(), description, questions: qs });
+    await logAction({ data: { action: "Oprettede ansøgningstype", target: title.trim() } });
     setTitle(""); setDescription(""); setQuestions([{ label: "", required: true, long: false }]);
     refresh();
   }
@@ -138,7 +141,7 @@ function TypeEditor() {
               <button onClick={async () => { await supabase.from("application_types").update({ is_open: !t.is_open }).eq("id", t.id); refresh(); }} className="btn-ghost !min-h-9 !px-3">
                 {t.is_open ? <><EyeOff className="h-4 w-4" /> Luk</> : <><Eye className="h-4 w-4" /> Åbn</>}
               </button>
-              <button onClick={async () => { if (confirm(`Slet "${t.title}" og alle dens ansøgninger?`)) { await supabase.from("application_types").delete().eq("id", t.id); refresh(); } }} className="btn-ghost !min-h-9 !px-3" aria-label={`Slet ${t.title}`}><Trash2 className="h-4 w-4" /></button>
+              <button onClick={async () => { if (confirm(`Slet "${t.title}" og alle dens ansøgninger?`)) { await supabase.from("application_types").delete().eq("id", t.id); await logAction({ data: { action: "Slettede ansøgningstype", target: t.title } }); refresh(); } }} className="btn-ghost !min-h-9 !px-3" aria-label={`Slet ${t.title}`}><Trash2 className="h-4 w-4" /></button>
             </div>
           </li>
         ))}
@@ -166,7 +169,7 @@ function TypeEditor() {
   );
 }
 
-function ApiKeyBox() {
+export function ApiKeyBox() {
   const [show, setShow] = useState(false);
   const { data } = useQuery({
     queryKey: ["staff-fivem-key"],
