@@ -1,4 +1,4 @@
-import { logAction } from "@/lib/admin.functions";
+import { logAction, deleteApplication } from "@/lib/admin.functions";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, X, RotateCcw, Plus, Trash2, Eye, EyeOff, Copy } from "lucide-react";
@@ -22,7 +22,7 @@ export function IngamePanel() {
   );
 }
 
-function IngameApplications() {
+export function IngameApplications() {
   const qc = useQueryClient();
   const [tab, setTab] = useState<Status>("afventer");
   const [query, setQuery] = useState("");
@@ -92,6 +92,7 @@ function IngameApplications() {
               {a.status !== "godkendt" && <button onClick={() => setStatus(a.id, "godkendt")} className="btn-primary"><Check className="h-4 w-4" /> Godkend</button>}
               {a.status !== "afvist" && <button onClick={() => setStatus(a.id, "afvist")} className="btn-ghost"><X className="h-4 w-4" /> Afvis</button>}
               {a.status !== "afventer" && <button onClick={() => setStatus(a.id, "afventer")} className="btn-ghost"><RotateCcw className="h-4 w-4" /> Sæt til afventer</button>}
+              <button onClick={async () => { if (!confirm(`Slet ansøgningen fra ${a.player_name || "ukendt"}? Det kan ikke fortrydes.`)) return; try { await deleteApplication({ data: { id: a.id, kind: "ingame", name: a.player_name } }); } catch (e) { alert(e instanceof Error ? e.message : "Fejl"); } qc.invalidateQueries({ queryKey: ["staff-ingame-apps"] }); }} className="btn-ghost text-destructive"><Trash2 className="h-4 w-4" /> Slet</button>
             </div>
           </article>
         ))}
@@ -100,7 +101,7 @@ function IngameApplications() {
   );
 }
 
-function TypeEditor() {
+export function TypeEditor() {
   const qc = useQueryClient();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -168,7 +169,7 @@ function TypeEditor() {
   );
 }
 
-function ApiKeyBox() {
+export function ApiKeyBox() {
   const [show, setShow] = useState(false);
   const { data } = useQuery({
     queryKey: ["staff-fivem-key"],
