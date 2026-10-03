@@ -1,3 +1,4 @@
+import { logAction } from "@/lib/admin.functions";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, X, RotateCcw, Plus, Trash2, Eye, EyeOff, Copy } from "lucide-react";
@@ -119,6 +120,7 @@ function TypeEditor() {
     const qs = questions.filter((q) => q.label.trim()).map((q) => ({ ...q, label: q.label.trim() }));
     if (!title.trim() || qs.length === 0) return;
     await supabase.from("application_types").insert({ title: title.trim(), description, questions: qs });
+    await logAction({ data: { action: "Oprettede ansøgningstype", target: title.trim() } });
     setTitle(""); setDescription(""); setQuestions([{ label: "", required: true, long: false }]);
     refresh();
   }
@@ -138,7 +140,7 @@ function TypeEditor() {
               <button onClick={async () => { await supabase.from("application_types").update({ is_open: !t.is_open }).eq("id", t.id); refresh(); }} className="btn-ghost !min-h-9 !px-3">
                 {t.is_open ? <><EyeOff className="h-4 w-4" /> Luk</> : <><Eye className="h-4 w-4" /> Åbn</>}
               </button>
-              <button onClick={async () => { if (confirm(`Slet "${t.title}" og alle dens ansøgninger?`)) { await supabase.from("application_types").delete().eq("id", t.id); refresh(); } }} className="btn-ghost !min-h-9 !px-3" aria-label={`Slet ${t.title}`}><Trash2 className="h-4 w-4" /></button>
+              <button onClick={async () => { if (confirm(`Slet "${t.title}" og alle dens ansøgninger?`)) { await supabase.from("application_types").delete().eq("id", t.id); await logAction({ data: { action: "Slettede ansøgningstype", target: t.title } }); refresh(); } }} className="btn-ghost !min-h-9 !px-3" aria-label={`Slet ${t.title}`}><Trash2 className="h-4 w-4" /></button>
             </div>
           </li>
         ))}
