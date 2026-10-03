@@ -17,7 +17,15 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as KomIGangRouteImport } from './routes/kom-i-gang'
 import { Route as ReglerRouteImport } from './routes/regler'
 import { Route as StatusRouteImport } from './routes/status'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedStaffRouteImport } from './routes/_authenticated/staff'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminAiRouteImport } from './routes/_authenticated/admin/ai'
+import { Route as AuthenticatedAdminAnsogningerRouteImport } from './routes/_authenticated/admin/ansogninger'
+import { Route as AuthenticatedAdminLogRouteImport } from './routes/_authenticated/admin/log'
+import { Route as AuthenticatedAdminStaffRouteImport } from './routes/_authenticated/admin/staff'
+import { Route as AuthenticatedAdminStatusRouteImport } from './routes/_authenticated/admin/status'
+import { Route as AuthenticatedAdminWhitelistRouteImport } from './routes/_authenticated/admin/whitelist'
 import { Route as ApiPublicFivemAppRouteImport } from './routes/api/public/fivem-app'
 import { Route as ApiPublicFivemStatusRouteImport } from './routes/api/public/fivem-status'
 
@@ -60,11 +68,54 @@ const StatusRoute = StatusRouteImport.update({
   path: '/status',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedStaffRoute = AuthenticatedStaffRouteImport.update({
   id: '/staff',
   path: '/staff',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminAiRoute = AuthenticatedAdminAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminAnsogningerRoute =
+  AuthenticatedAdminAnsogningerRouteImport.update({
+    id: '/ansogninger',
+    path: '/ansogninger',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminLogRoute = AuthenticatedAdminLogRouteImport.update({
+  id: '/log',
+  path: '/log',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminStaffRoute = AuthenticatedAdminStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminStatusRoute =
+  AuthenticatedAdminStatusRouteImport.update({
+    id: '/status',
+    path: '/status',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminWhitelistRoute =
+  AuthenticatedAdminWhitelistRouteImport.update({
+    id: '/whitelist',
+    path: '/whitelist',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const ApiPublicFivemAppRoute = ApiPublicFivemAppRouteImport.update({
   id: '/api/public/fivem-app',
   path: '/api/public/fivem-app',
@@ -84,9 +135,17 @@ export interface FileRoutesByFullPath {
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
   '/status': typeof StatusRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/staff': typeof AuthenticatedStaffRoute
+  '/admin/ai': typeof AuthenticatedAdminAiRoute
+  '/admin/ansogninger': typeof AuthenticatedAdminAnsogningerRoute
+  '/admin/log': typeof AuthenticatedAdminLogRoute
+  '/admin/staff': typeof AuthenticatedAdminStaffRoute
+  '/admin/status': typeof AuthenticatedAdminStatusRoute
+  '/admin/whitelist': typeof AuthenticatedAdminWhitelistRoute
   '/api/public/fivem-app': typeof ApiPublicFivemAppRoute
   '/api/public/fivem-status': typeof ApiPublicFivemStatusRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -97,8 +156,15 @@ export interface FileRoutesByTo {
   '/regler': typeof ReglerRoute
   '/status': typeof StatusRoute
   '/staff': typeof AuthenticatedStaffRoute
+  '/admin/ai': typeof AuthenticatedAdminAiRoute
+  '/admin/ansogninger': typeof AuthenticatedAdminAnsogningerRoute
+  '/admin/log': typeof AuthenticatedAdminLogRoute
+  '/admin/staff': typeof AuthenticatedAdminStaffRoute
+  '/admin/status': typeof AuthenticatedAdminStatusRoute
+  '/admin/whitelist': typeof AuthenticatedAdminWhitelistRoute
   '/api/public/fivem-app': typeof ApiPublicFivemAppRoute
   '/api/public/fivem-status': typeof ApiPublicFivemStatusRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -110,9 +176,17 @@ export interface FileRoutesById {
   '/kom-i-gang': typeof KomIGangRoute
   '/regler': typeof ReglerRoute
   '/status': typeof StatusRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/staff': typeof AuthenticatedStaffRoute
+  '/_authenticated/admin/ai': typeof AuthenticatedAdminAiRoute
+  '/_authenticated/admin/ansogninger': typeof AuthenticatedAdminAnsogningerRoute
+  '/_authenticated/admin/log': typeof AuthenticatedAdminLogRoute
+  '/_authenticated/admin/staff': typeof AuthenticatedAdminStaffRoute
+  '/_authenticated/admin/status': typeof AuthenticatedAdminStatusRoute
+  '/_authenticated/admin/whitelist': typeof AuthenticatedAdminWhitelistRoute
   '/api/public/fivem-app': typeof ApiPublicFivemAppRoute
   '/api/public/fivem-status': typeof ApiPublicFivemStatusRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -124,9 +198,17 @@ export interface FileRouteTypes {
     | '/kom-i-gang'
     | '/regler'
     | '/status'
+    | '/admin'
     | '/staff'
+    | '/admin/ai'
+    | '/admin/ansogninger'
+    | '/admin/log'
+    | '/admin/staff'
+    | '/admin/status'
+    | '/admin/whitelist'
     | '/api/public/fivem-app'
     | '/api/public/fivem-status'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -137,8 +219,15 @@ export interface FileRouteTypes {
     | '/regler'
     | '/status'
     | '/staff'
+    | '/admin/ai'
+    | '/admin/ansogninger'
+    | '/admin/log'
+    | '/admin/staff'
+    | '/admin/status'
+    | '/admin/whitelist'
     | '/api/public/fivem-app'
     | '/api/public/fivem-status'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -149,9 +238,17 @@ export interface FileRouteTypes {
     | '/kom-i-gang'
     | '/regler'
     | '/status'
+    | '/_authenticated/admin'
     | '/_authenticated/staff'
+    | '/_authenticated/admin/ai'
+    | '/_authenticated/admin/ansogninger'
+    | '/_authenticated/admin/log'
+    | '/_authenticated/admin/staff'
+    | '/_authenticated/admin/status'
+    | '/_authenticated/admin/whitelist'
     | '/api/public/fivem-app'
     | '/api/public/fivem-status'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -225,12 +322,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StatusRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/staff': {
       id: '/_authenticated/staff'
       path: '/staff'
       fullPath: '/staff'
       preLoaderRoute: typeof AuthenticatedStaffRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/ai': {
+      id: '/_authenticated/admin/ai'
+      path: '/ai'
+      fullPath: '/admin/ai'
+      preLoaderRoute: typeof AuthenticatedAdminAiRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/ansogninger': {
+      id: '/_authenticated/admin/ansogninger'
+      path: '/ansogninger'
+      fullPath: '/admin/ansogninger'
+      preLoaderRoute: typeof AuthenticatedAdminAnsogningerRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/log': {
+      id: '/_authenticated/admin/log'
+      path: '/log'
+      fullPath: '/admin/log'
+      preLoaderRoute: typeof AuthenticatedAdminLogRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/staff': {
+      id: '/_authenticated/admin/staff'
+      path: '/staff'
+      fullPath: '/admin/staff'
+      preLoaderRoute: typeof AuthenticatedAdminStaffRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/status': {
+      id: '/_authenticated/admin/status'
+      path: '/status'
+      fullPath: '/admin/status'
+      preLoaderRoute: typeof AuthenticatedAdminStatusRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/whitelist': {
+      id: '/_authenticated/admin/whitelist'
+      path: '/whitelist'
+      fullPath: '/admin/whitelist'
+      preLoaderRoute: typeof AuthenticatedAdminWhitelistRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/api/public/fivem-app': {
       id: '/api/public/fivem-app'
@@ -249,11 +402,39 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminAiRoute: typeof AuthenticatedAdminAiRoute
+  AuthenticatedAdminAnsogningerRoute: typeof AuthenticatedAdminAnsogningerRoute
+  AuthenticatedAdminLogRoute: typeof AuthenticatedAdminLogRoute
+  AuthenticatedAdminStaffRoute: typeof AuthenticatedAdminStaffRoute
+  AuthenticatedAdminStatusRoute: typeof AuthenticatedAdminStatusRoute
+  AuthenticatedAdminWhitelistRoute: typeof AuthenticatedAdminWhitelistRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminAiRoute: AuthenticatedAdminAiRoute,
+    AuthenticatedAdminAnsogningerRoute: AuthenticatedAdminAnsogningerRoute,
+    AuthenticatedAdminLogRoute: AuthenticatedAdminLogRoute,
+    AuthenticatedAdminStaffRoute: AuthenticatedAdminStaffRoute,
+    AuthenticatedAdminStatusRoute: AuthenticatedAdminStatusRoute,
+    AuthenticatedAdminWhitelistRoute: AuthenticatedAdminWhitelistRoute,
+    AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedStaffRoute: typeof AuthenticatedStaffRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
   AuthenticatedStaffRoute: AuthenticatedStaffRoute,
 }
 
