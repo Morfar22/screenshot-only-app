@@ -52,6 +52,10 @@ export const setApplicationStatus = createServerFn({ method: "POST" })
       .select("player_name,staff_note,user_id,application_types(title)")
       .single();
     if (error) throw new Error("Kunne ikke opdatere");
+    {
+      const { logActivity } = await import("./activity.server");
+      await logActivity(context.userId, String((context.claims as Record<string, unknown>)["email"] ?? ""), `Satte ansøgning til ${data.status}`, String((row as Record<string, unknown>)["player_name"] ?? (row as Record<string, unknown>)["character_name"] ?? ""));
+    }
     if (data.status !== "afventer") {
       let discordId: string | null = null;
       if (row.user_id) {
@@ -112,6 +116,10 @@ export const setWhitelistStatus = createServerFn({ method: "POST" })
       .select("character_name,user_id")
       .single();
     if (error) throw new Error("Kunne ikke opdatere");
+    {
+      const { logActivity } = await import("./activity.server");
+      await logActivity(context.userId, String((context.claims as Record<string, unknown>)["email"] ?? ""), `Satte ansøgning til ${data.status}`, String((row as Record<string, unknown>)["player_name"] ?? (row as Record<string, unknown>)["character_name"] ?? ""));
+    }
     if (data.status !== "afventer") {
       let discordId: string | null = null;
       if (row.user_id) {

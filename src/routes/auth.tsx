@@ -28,10 +28,10 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/staff" });
+      if (data.session) navigate({ to: "/admin" });
     });
     const { data } = supabase.auth.onAuthStateChange((_e, s) => {
-      if (s) navigate({ to: "/staff" });
+      if (s) navigate({ to: "/admin" });
     });
     return () => data.subscription.unsubscribe();
   }, [navigate]);
