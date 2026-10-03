@@ -11,3 +11,4 @@
 
 - Keep generated website photography in `src/assets` and import it directly in routes, because these images are part of the app's permanent visual identity.
 - In-game FiveM apps talk to the site only via /api/public/fivem-app with a server-side key from fivem_app_keys; the key never reaches player clients, so the FiveM server must proxy all calls.
+- Staff tools live under /admin (sidebar layout in src/routes/_authenticated/admin); privileged staff actions go through server functions that write to activity_log, so the log stays complete.
