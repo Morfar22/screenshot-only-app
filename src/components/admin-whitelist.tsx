@@ -25,7 +25,9 @@ export function WhitelistPanel() {
   const updateStatus = useServerFn(setWhitelistStatus);
   const del = useServerFn(deleteApplication);
   async function setStatus(id: string, status: Status) {
-    await updateStatus({ data: { id, status } });
+    const note = status === "afventer" ? undefined : window.prompt(`Begrundelse for ${status === "godkendt" ? "godkendelse" : "afvisning"} (valgfri — sendes med til ansøgeren og Discord):`, "");
+    if (note === null) return;
+    await updateStatus({ data: { id, status, ...(note !== undefined ? { note } : {}) } });
     qc.invalidateQueries({ queryKey: ["staff-data"] });
   }
   async function deleteApp(id: string, name: string) {

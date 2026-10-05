@@ -39,7 +39,9 @@ export function IngameApplications() {
   });
   const updateStatus = useServerFn(setApplicationStatus);
   async function setStatus(id: string, status: Status) {
-    try { await updateStatus({ data: { id, status } }); } catch (e) { alert(e instanceof Error ? e.message : "Fejl"); }
+    try { const note = status === "afventer" ? undefined : window.prompt(`Begrundelse for ${status === "godkendt" ? "godkendelse" : "afvisning"} (valgfri — sendes med til ansøgeren og Discord):`, "");
+    if (note === null) return;
+    await updateStatus({ data: { id, status, ...(note !== undefined ? { note } : {}) } }); } catch (e) { alert(e instanceof Error ? e.message : "Fejl"); }
     qc.invalidateQueries({ queryKey: ["staff-ingame-apps"] });
   }
   const q = query.trim().toLowerCase();

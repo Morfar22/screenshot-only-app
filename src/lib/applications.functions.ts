@@ -41,13 +41,13 @@ export const submitWebApplication = createServerFn({ method: "POST" })
 
 export const setApplicationStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) => z.object({ id: z.string().uuid(), status: z.enum(["afventer", "godkendt", "afvist"]) }).parse(d))
+  .inputValidator((d) => z.object({ id: z.string().uuid(), status: z.enum(["afventer", "godkendt", "afvist"]), note: z.string().trim().max(1500).optional() }).parse(d))
   .handler(async ({ data, context }) => {
     const { data: staff } = await context.supabase.rpc("is_staff", { _user_id: context.userId });
     if (!staff) throw new Error("Forbidden");
     const { data: row, error } = await context.supabase
       .from("ingame_applications")
-      .update({ status: data.status, updated_at: new Date().toISOString() })
+      .update({ status: data.status, updated_at: new Date().toISOString(), ...(data.note !== undefined ? { staff_note: data.note } : {}) })
       .eq("id", data.id)
       .select("player_name,staff_note,user_id,application_types(title)")
       .single();
@@ -105,15 +105,15 @@ export const submitWhitelistApplication = createServerFn({ method: "POST" })
 
 export const setWhitelistStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) => z.object({ id: z.string().uuid(), status: z.enum(["afventer", "godkendt", "afvist"]) }).parse(d))
+  .inputValidator((d) => z.object({ id: z.string().uuid(), status: z.enum(["afventer", "godkendt", "afvist"]), note: z.string().trim().max(1500).optional() }).parse(d))
   .handler(async ({ data, context }) => {
     const { data: staff } = await context.supabase.rpc("is_staff", { _user_id: context.userId });
     if (!staff) throw new Error("Forbidden");
     const { data: row, error } = await context.supabase
       .from("whitelist_applications")
-      .update({ status: data.status })
+      .update({ status: data.status, ...(data.note !== undefined ? { staff_note: data.note } : {}) })
       .eq("id", data.id)
-      .select("character_name,user_id")
+      .select("character_name,user_id,staff_note")
       .single();
     if (error) throw new Error("Kunne ikke opdatere");
     {
@@ -129,7 +129,7 @@ export const setWhitelistStatus = createServerFn({ method: "POST" })
         discordId = (ident?.identity_data?.["provider_id"] as string) ?? ident?.id ?? null;
       }
       const { sendWebhook, decisionEmbed } = await import("./discord-webhook.server");
-      await sendWebhook("results", decisionEmbed({ title: "Whitelist", name: row.character_name, status: data.status, discordId }));
+      await sendWebhook("results", decisionEmbed({ title: "Whitelist", name: row.character_name, status: data.status, note: row.staff_note, discordId }));
     }
     return { ok: true };
   });
