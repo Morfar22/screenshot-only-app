@@ -163,6 +163,65 @@ export type Database = {
         }
         Relationships: []
       }
+      rule_sections: {
+        Row: {
+          created_at: string
+          id: string
+          sort: number
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          sort?: number
+          title: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          sort?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      rules: {
+        Row: {
+          body: string
+          id: string
+          number: string
+          section_id: string
+          sort: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          id?: string
+          number: string
+          section_id: string
+          sort?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          id?: string
+          number?: string
+          section_id?: string
+          sort?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rules_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "rule_sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       server_status: {
         Row: {
           id: string
