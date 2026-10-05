@@ -277,6 +277,7 @@ export type Database = {
           id: string
           read_rules: boolean
           rp_experience: string | null
+          staff_note: string
           status: string
           user_id: string | null
         }
@@ -289,6 +290,7 @@ export type Database = {
           id?: string
           read_rules: boolean
           rp_experience?: string | null
+          staff_note?: string
           status?: string
           user_id?: string | null
         }
@@ -301,6 +303,7 @@ export type Database = {
           id?: string
           read_rules?: boolean
           rp_experience?: string | null
+          staff_note?: string
           status?: string
           user_id?: string | null
         }

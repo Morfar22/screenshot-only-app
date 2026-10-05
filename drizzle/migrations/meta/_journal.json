@@ -78,6 +78,13 @@
       "when": 1791232693304,
       "tag": "0010_editable_rules",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1791234108393,
+      "tag": "0011_whitelist_staff_note",
+      "breakpoints": true
     }
   ]
 }
