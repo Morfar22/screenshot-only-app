@@ -14,6 +14,13 @@ function displayName(claims: Record<string, unknown>) {
   return (m["full_name"] || m["name"] || m["user_name"] || (claims["email"] as string) || "Ukendt").slice(0, 80);
 }
 
+// The name shown to staff and on Discord comes from the application itself:
+// the first answer whose question mentions "navn" (Discord-navn, karakternavn…).
+function applicantName(answers: { question: string; answer: string }[], fallback: string) {
+  const hit = answers.find((a) => /navn/i.test(a.question) && a.answer.trim());
+  return (hit?.answer.trim() || fallback).slice(0, 80);
+}
+
 export const submitWebApplication = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => submitSchema.parse(d))
