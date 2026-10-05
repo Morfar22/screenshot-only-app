@@ -79,6 +79,7 @@ export function WhitelistPanel() {
                         <p className="mt-1 whitespace-pre-wrap text-foreground/90">{a.rp_experience}</p>
                       </>
                     )}
+                    {a.staff_note && <p className="mt-4 text-sm text-muted-foreground">Begrundelse: <span className="text-foreground">{a.staff_note}</span></p>}
                     <div className="mt-5 flex flex-wrap gap-2">
                       {a.status !== "godkendt" && <button onClick={() => setStatus(a.id, "godkendt")} className="btn-primary"><Check className="h-4 w-4" /> Godkend</button>}
                       {a.status !== "afvist" && <button onClick={() => setStatus(a.id, "afvist")} className="btn-ghost"><X className="h-4 w-4" /> Afvis</button>}
