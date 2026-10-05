@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { LayoutDashboard, ScrollText, Gamepad2, Activity, Sparkles, Users, History, LogOut } from "lucide-react";
+import { LayoutDashboard, ScrollText, Gamepad2, Activity, Sparkles, Users, History, LogOut, BookOpen } from "lucide-react";
 import { PageShell } from "@/components/site";
 import { supabase } from "@/integrations/supabase/client";
 import { getMyAccess } from "@/lib/admin.functions";
@@ -27,6 +27,7 @@ const nav = [
   { to: "/admin", label: "Oversigt", icon: LayoutDashboard, exact: true },
   { to: "/admin/whitelist", label: "Whitelist", icon: ScrollText },
   { to: "/admin/ansogninger", label: "Ansøgninger", icon: Gamepad2 },
+  { to: "/admin/regler", label: "Regler", icon: BookOpen },
   { to: "/admin/status", label: "Serverstatus", icon: Activity },
   { to: "/admin/ai", label: "AI-assistent", icon: Sparkles },
   { to: "/admin/log", label: "Aktivitetslog", icon: History },
