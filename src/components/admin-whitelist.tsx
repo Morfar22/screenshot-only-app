@@ -25,7 +25,9 @@ export function WhitelistPanel() {
   const updateStatus = useServerFn(setWhitelistStatus);
   const del = useServerFn(deleteApplication);
   async function setStatus(id: string, status: Status) {
-    await updateStatus({ data: { id, status } });
+    const note = status === "afventer" ? undefined : window.prompt(`Begrundelse for ${status === "godkendt" ? "godkendelse" : "afvisning"} (valgfri — sendes med til ansøgeren og Discord):`, "");
+    if (note === null) return;
+    await updateStatus({ data: { id, status, ...(note !== undefined ? { note } : {}) } });
     qc.invalidateQueries({ queryKey: ["staff-data"] });
   }
   async function deleteApp(id: string, name: string) {
@@ -77,6 +79,7 @@ export function WhitelistPanel() {
                         <p className="mt-1 whitespace-pre-wrap text-foreground/90">{a.rp_experience}</p>
                       </>
                     )}
+                    {a.staff_note && <p className="mt-4 text-sm text-muted-foreground">Begrundelse: <span className="text-foreground">{a.staff_note}</span></p>}
                     <div className="mt-5 flex flex-wrap gap-2">
                       {a.status !== "godkendt" && <button onClick={() => setStatus(a.id, "godkendt")} className="btn-primary"><Check className="h-4 w-4" /> Godkend</button>}
                       {a.status !== "afvist" && <button onClick={() => setStatus(a.id, "afvist")} className="btn-ghost"><X className="h-4 w-4" /> Afvis</button>}

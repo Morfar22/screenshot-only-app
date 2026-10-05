@@ -1,0 +1,1 @@
+ALTER TABLE public.whitelist_applications ADD COLUMN IF NOT EXISTS staff_note text NOT NULL DEFAULT '';

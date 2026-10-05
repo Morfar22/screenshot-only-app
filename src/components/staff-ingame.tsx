@@ -31,7 +31,7 @@ export function IngameApplications() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("ingame_applications")
-        .select("id,player_name,fivem_identifier,answers,status,source,created_at,application_types(title)")
+        .select("id,player_name,fivem_identifier,answers,status,source,staff_note,created_at,application_types(title)")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data ?? [];
@@ -39,7 +39,9 @@ export function IngameApplications() {
   });
   const updateStatus = useServerFn(setApplicationStatus);
   async function setStatus(id: string, status: Status) {
-    try { await updateStatus({ data: { id, status } }); } catch (e) { alert(e instanceof Error ? e.message : "Fejl"); }
+    try { const note = status === "afventer" ? undefined : window.prompt(`Begrundelse for ${status === "godkendt" ? "godkendelse" : "afvisning"} (valgfri — sendes med til ansøgeren og Discord):`, "");
+    if (note === null) return;
+    await updateStatus({ data: { id, status, ...(note !== undefined ? { note } : {}) } }); } catch (e) { alert(e instanceof Error ? e.message : "Fejl"); }
     qc.invalidateQueries({ queryKey: ["staff-ingame-apps"] });
   }
   const q = query.trim().toLowerCase();
@@ -88,6 +90,7 @@ export function IngameApplications() {
                 <p className="mt-1 whitespace-pre-wrap text-foreground/90">{x.answer || "—"}</p>
               </div>
             ))}
+            {a.staff_note && <p className="mt-4 text-sm text-muted-foreground">Begrundelse: <span className="text-foreground">{a.staff_note}</span></p>}
             <div className="mt-5 flex flex-wrap gap-2">
               {a.status !== "godkendt" && <button onClick={() => setStatus(a.id, "godkendt")} className="btn-primary"><Check className="h-4 w-4" /> Godkend</button>}
               {a.status !== "afvist" && <button onClick={() => setStatus(a.id, "afvist")} className="btn-ghost"><X className="h-4 w-4" /> Afvis</button>}
