@@ -56,7 +56,7 @@ export const setApplicationStatus = createServerFn({ method: "POST" })
       .from("ingame_applications")
       .update({ status: data.status, updated_at: new Date().toISOString(), ...(data.note !== undefined ? { staff_note: data.note } : {}) })
       .eq("id", data.id)
-      .select("player_name,staff_note,user_id,application_types(title)")
+      .select("player_name,staff_note,user_id,answers,application_types(title)")
       .single();
     if (error) throw new Error("Kunne ikke opdatere");
     {
