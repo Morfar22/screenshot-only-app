@@ -23,6 +23,7 @@ import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminAiRouteImport } from './routes/_authenticated/admin/ai'
 import { Route as AuthenticatedAdminAnsogningerRouteImport } from './routes/_authenticated/admin/ansogninger'
 import { Route as AuthenticatedAdminLogRouteImport } from './routes/_authenticated/admin/log'
+import { Route as AuthenticatedAdminReglerRouteImport } from './routes/_authenticated/admin/regler'
 import { Route as AuthenticatedAdminStaffRouteImport } from './routes/_authenticated/admin/staff'
 import { Route as AuthenticatedAdminStatusRouteImport } from './routes/_authenticated/admin/status'
 import { Route as AuthenticatedAdminWhitelistRouteImport } from './routes/_authenticated/admin/whitelist'
@@ -99,6 +100,12 @@ const AuthenticatedAdminLogRoute = AuthenticatedAdminLogRouteImport.update({
   path: '/log',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminReglerRoute =
+  AuthenticatedAdminReglerRouteImport.update({
+    id: '/regler',
+    path: '/regler',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminStaffRoute = AuthenticatedAdminStaffRouteImport.update({
   id: '/staff',
   path: '/staff',
@@ -140,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/admin/ai': typeof AuthenticatedAdminAiRoute
   '/admin/ansogninger': typeof AuthenticatedAdminAnsogningerRoute
   '/admin/log': typeof AuthenticatedAdminLogRoute
+  '/admin/regler': typeof AuthenticatedAdminReglerRoute
   '/admin/staff': typeof AuthenticatedAdminStaffRoute
   '/admin/status': typeof AuthenticatedAdminStatusRoute
   '/admin/whitelist': typeof AuthenticatedAdminWhitelistRoute
@@ -159,6 +167,7 @@ export interface FileRoutesByTo {
   '/admin/ai': typeof AuthenticatedAdminAiRoute
   '/admin/ansogninger': typeof AuthenticatedAdminAnsogningerRoute
   '/admin/log': typeof AuthenticatedAdminLogRoute
+  '/admin/regler': typeof AuthenticatedAdminReglerRoute
   '/admin/staff': typeof AuthenticatedAdminStaffRoute
   '/admin/status': typeof AuthenticatedAdminStatusRoute
   '/admin/whitelist': typeof AuthenticatedAdminWhitelistRoute
@@ -181,6 +190,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/ai': typeof AuthenticatedAdminAiRoute
   '/_authenticated/admin/ansogninger': typeof AuthenticatedAdminAnsogningerRoute
   '/_authenticated/admin/log': typeof AuthenticatedAdminLogRoute
+  '/_authenticated/admin/regler': typeof AuthenticatedAdminReglerRoute
   '/_authenticated/admin/staff': typeof AuthenticatedAdminStaffRoute
   '/_authenticated/admin/status': typeof AuthenticatedAdminStatusRoute
   '/_authenticated/admin/whitelist': typeof AuthenticatedAdminWhitelistRoute
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/admin/ai'
     | '/admin/ansogninger'
     | '/admin/log'
+    | '/admin/regler'
     | '/admin/staff'
     | '/admin/status'
     | '/admin/whitelist'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/admin/ai'
     | '/admin/ansogninger'
     | '/admin/log'
+    | '/admin/regler'
     | '/admin/staff'
     | '/admin/status'
     | '/admin/whitelist'
@@ -243,6 +255,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/ai'
     | '/_authenticated/admin/ansogninger'
     | '/_authenticated/admin/log'
+    | '/_authenticated/admin/regler'
     | '/_authenticated/admin/staff'
     | '/_authenticated/admin/status'
     | '/_authenticated/admin/whitelist'
@@ -364,6 +377,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminLogRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/regler': {
+      id: '/_authenticated/admin/regler'
+      path: '/regler'
+      fullPath: '/admin/regler'
+      preLoaderRoute: typeof AuthenticatedAdminReglerRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/staff': {
       id: '/_authenticated/admin/staff'
       path: '/staff'
@@ -406,6 +426,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminAiRoute: typeof AuthenticatedAdminAiRoute
   AuthenticatedAdminAnsogningerRoute: typeof AuthenticatedAdminAnsogningerRoute
   AuthenticatedAdminLogRoute: typeof AuthenticatedAdminLogRoute
+  AuthenticatedAdminReglerRoute: typeof AuthenticatedAdminReglerRoute
   AuthenticatedAdminStaffRoute: typeof AuthenticatedAdminStaffRoute
   AuthenticatedAdminStatusRoute: typeof AuthenticatedAdminStatusRoute
   AuthenticatedAdminWhitelistRoute: typeof AuthenticatedAdminWhitelistRoute
@@ -417,6 +438,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminAiRoute: AuthenticatedAdminAiRoute,
     AuthenticatedAdminAnsogningerRoute: AuthenticatedAdminAnsogningerRoute,
     AuthenticatedAdminLogRoute: AuthenticatedAdminLogRoute,
+    AuthenticatedAdminReglerRoute: AuthenticatedAdminReglerRoute,
     AuthenticatedAdminStaffRoute: AuthenticatedAdminStaffRoute,
     AuthenticatedAdminStatusRoute: AuthenticatedAdminStatusRoute,
     AuthenticatedAdminWhitelistRoute: AuthenticatedAdminWhitelistRoute,
