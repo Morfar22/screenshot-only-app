@@ -35,7 +35,7 @@ export const submitWebApplication = createServerFn({ method: "POST" })
       .from("ingame_applications").select("id")
       .eq("user_id", context.userId).eq("type_id", data.typeId).eq("status", "afventer").maybeSingle();
     if (pending) throw new Error("Du har allerede en ansøgning, der afventer");
-    const name = displayName(context.claims as Record<string, unknown>);
+    const name = applicantName(data.answers, displayName(context.claims as Record<string, unknown>));
     const { error } = await supabaseAdmin.from("ingame_applications").insert({
       type_id: data.typeId, user_id: context.userId, fivem_identifier: `web:${context.userId}`,
       player_name: name, answers: data.answers, source: "web",
