@@ -56,7 +56,7 @@ export const setApplicationStatus = createServerFn({ method: "POST" })
       .from("ingame_applications")
       .update({ status: data.status, updated_at: new Date().toISOString(), ...(data.note !== undefined ? { staff_note: data.note } : {}) })
       .eq("id", data.id)
-      .select("player_name,staff_note,user_id,application_types(title)")
+      .select("player_name,staff_note,user_id,answers,application_types(title)")
       .single();
     if (error) throw new Error("Kunne ikke opdatere");
     {
@@ -72,9 +72,13 @@ export const setApplicationStatus = createServerFn({ method: "POST" })
         discordId = (ident?.identity_data?.["provider_id"] as string) ?? ident?.id ?? null;
       }
       const { sendWebhook, decisionEmbed } = await import("./discord-webhook.server");
+      const name = applicantName(
+        (row.answers as { question: string; answer: string }[]) ?? [],
+        row.player_name,
+      );
       await sendWebhook("results", decisionEmbed({
         title: (row.application_types as { title: string } | null)?.title ?? "Ansøgning",
-        name: row.player_name, status: data.status, note: row.staff_note, discordId,
+        name, status: data.status, note: row.staff_note, discordId,
       }));
     }
     return { ok: true };
