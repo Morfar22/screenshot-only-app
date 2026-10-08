@@ -2,14 +2,49 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { UserPlus, Trash2 } from "lucide-react";
-import { listStaff, setStaffRole } from "@/lib/admin.functions";
+import { UserPlus, Trash2, Bell } from "lucide-react";
+import { listStaff, setStaffRole, getPingRole, setPingRole } from "@/lib/admin.functions";
 import { adminHead, AdminTitle, useAccess } from "./route";
 
 export const Route = createFileRoute("/_authenticated/admin/staff")({
   head: adminHead("Staff"),
   component: StaffPage,
 });
+
+function PingRoleBox() {
+  const qc = useQueryClient();
+  const get = useServerFn(getPingRole);
+  const set = useServerFn(setPingRole);
+  const { data } = useQuery({ queryKey: ["ping-role"], queryFn: () => get() });
+  const [roleId, setRoleId] = useState<string | null>(null);
+  const [msg, setMsg] = useState("");
+  const value = roleId ?? data?.roleId ?? "";
+
+  async function save() {
+    setMsg("");
+    try {
+      await set({ data: { roleId: value.trim() } });
+      setMsg(value.trim() ? "Rollen pinges nu ved nye ansøgninger." : "Ping er slået fra.");
+      qc.invalidateQueries({ queryKey: ["ping-role"] });
+    } catch (err) { setMsg(err instanceof Error ? err.message : "Fejl"); }
+  }
+
+  const input = "w-full rounded-sm border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary-glow focus:outline-none";
+  return (
+    <div className="engraved mt-8 rounded-sm bg-card p-6">
+      <h2 className="flex items-center gap-2 text-lg font-semibold"><Bell className="h-4 w-4 text-primary-glow" /> Ping ved nye ansøgninger</h2>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Skriv ID'et på den Discord-rolle, der skal pinges i staff-kanalen, når der kommer en ny ansøgning. Lad feltet være tomt for at slå ping fra.
+        Rollens ID finder du i Discord under Serverindstillinger → Roller → højreklik på rollen → Kopier rolle-ID (kræver udviklertilstand).
+      </p>
+      <form onSubmit={(e) => { e.preventDefault(); save(); }} className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
+        <input value={value} onChange={(e) => setRoleId(e.target.value)} placeholder="Rolle-ID, fx 123456789012345678" aria-label="Discord rolle-ID" className={input} />
+        <button className="btn-primary">Gem</button>
+      </form>
+      {msg && <p role="status" className="mt-3 text-sm text-primary-glow">{msg}</p>}
+    </div>
+  );
+}
 
 function StaffPage() {
   const access = useAccess();
