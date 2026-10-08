@@ -80,6 +80,7 @@ function StaffPage() {
         <p className="text-xs text-muted-foreground sm:col-span-3">Personen skal have logget ind på siden én gang (fx med Google), før de kan få adgang.</p>
       </form>
       {msg && <p role="status" className="mt-4 text-sm text-primary-glow">{msg}</p>}
+      <PingRoleBox />
       <ul className="mt-6 space-y-3">
         {(data?.staff ?? []).map((s) => (
           <li key={s.userId} className="engraved flex flex-wrap items-center justify-between gap-3 rounded-sm bg-card p-4">
