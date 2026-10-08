@@ -92,7 +92,7 @@ export const Route = createFileRoute("/api/public/fivem-app")({
         }
         const { data: t } = await db.from("application_types").select("title").eq("id", typeId).maybeSingle();
         const { sendWebhook, newApplicationEmbed } = await import("@/lib/discord-webhook.server");
-        await sendWebhook("staff", newApplicationEmbed({ title: t?.title ?? "Ansøgning", name: playerName, source: "fivem", answers }));
+        await sendWebhook("staff", newApplicationEmbed({ title: t?.title ?? "Ansøgning", name: playerName, source: "fivem", answers }), typeId);
         return json({ ok: true }, 201);
       },
     },

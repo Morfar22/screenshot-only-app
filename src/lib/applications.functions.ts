@@ -42,7 +42,7 @@ export const submitWebApplication = createServerFn({ method: "POST" })
     });
     if (error) throw new Error("Kunne ikke gemme ansøgningen");
     const { sendWebhook, newApplicationEmbed } = await import("./discord-webhook.server");
-    await sendWebhook("staff", newApplicationEmbed({ title: type.title, name, source: "web", answers: data.answers }));
+    await sendWebhook("staff", newApplicationEmbed({ title: type.title, name, source: "web", answers: data.answers }), data.typeId);
     return { ok: true };
   });
 
