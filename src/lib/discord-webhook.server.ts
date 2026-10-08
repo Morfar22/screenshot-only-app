@@ -1,14 +1,30 @@
 // Posts embeds to the staff / result Discord webhooks. Failures are logged, never thrown.
 type Kind = "staff" | "results";
 
+async function staffPingRole(): Promise<string> {
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await supabaseAdmin.from("site_settings").select("value").eq("key", "discord_ping_role").maybeSingle();
+    const v = (data?.value ?? "").trim();
+    return /^\d{5,25}$/.test(v) ? v : "";
+  } catch {
+    return "";
+  }
+}
+
 export async function sendWebhook(kind: Kind, embed: Record<string, unknown>) {
   const url = process.env[kind === "staff" ? "DISCORD_WEBHOOK_STAFF" : "DISCORD_WEBHOOK_RESULTS"];
   if (!url || !/^https:\/\/(canary\.|ptb\.)?discord(app)?\.com\/api\/webhooks\//.test(url)) return;
   try {
+    const roleId = kind === "staff" ? await staffPingRole() : "";
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: "Nordisk RP", embeds: [embed], allowed_mentions: { parse: [] } }),
+      body: JSON.stringify({
+        username: "Nordisk RP",
+        embeds: [embed],
+        ...(roleId ? { content: `<@&${roleId}>`, allowed_mentions: { roles: [roleId] } } : { allowed_mentions: { parse: [] } }),
+      }),
     });
     if (!res.ok) console.error(`Discord webhook ${kind} failed [${res.status}]: ${await res.text()}`);
   } catch (e) {

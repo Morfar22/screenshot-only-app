@@ -76,6 +76,28 @@ export const setStaffRole = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const getPingRole = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const c = context as unknown as Ctx;
+    await requireStaff(c);
+    const { data } = await c.supabase.from("site_settings").select("value").eq("key", "discord_ping_role").maybeSingle();
+    return { roleId: data?.value ?? "" };
+  });
+
+export const setPingRole = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ roleId: z.string().trim().regex(/^(\d{5,25})?$/, "Skal være et rolle-ID (kun tal) — eller tomt for at slå ping fra") }).parse(d))
+  .handler(async ({ data, context }) => {
+    const c = context as unknown as Ctx;
+    await requireAdmin(c);
+    const { error } = await c.supabase.from("site_settings").upsert({ key: "discord_ping_role", value: data.roleId, updated_at: new Date().toISOString() });
+    if (error) throw new Error("Kunne ikke gemme");
+    const { logActivity } = await import("./activity.server");
+    await logActivity(c.userId, emailOf(c), data.roleId ? "Satte Discord-pingrolle" : "Fjernede Discord-pingrolle", data.roleId);
+    return { ok: true };
+  });
+
 export const deleteApplication = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ id: z.string().uuid(), kind: z.enum(["whitelist", "ingame"]), name: z.string().max(120) }).parse(d))
