@@ -1,0 +1,1 @@
+ALTER TABLE public.application_types ADD COLUMN IF NOT EXISTS ping_role_id text NOT NULL DEFAULT '';
