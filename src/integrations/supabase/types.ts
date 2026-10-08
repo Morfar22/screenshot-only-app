@@ -47,6 +47,7 @@ export type Database = {
           description: string
           id: string
           is_open: boolean
+          ping_role_id: string
           questions: Json
           title: string
         }
@@ -55,6 +56,7 @@ export type Database = {
           description?: string
           id?: string
           is_open?: boolean
+          ping_role_id?: string
           questions?: Json
           title: string
         }
@@ -63,6 +65,7 @@ export type Database = {
           description?: string
           id?: string
           is_open?: boolean
+          ping_role_id?: string
           questions?: Json
           title?: string
         }

@@ -85,6 +85,13 @@
       "when": 1791234108393,
       "tag": "0011_whitelist_staff_note",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1791476100294,
+      "tag": "0012_type_ping_role",
+      "breakpoints": true
     }
   ]
 }

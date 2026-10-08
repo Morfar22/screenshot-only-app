@@ -139,6 +139,7 @@ export function TypeEditor() {
             <div>
               <p className="font-semibold">{t.title} {!t.is_open && <span className="text-sm text-muted-foreground">(lukket)</span>}</p>
               <p className="text-sm text-muted-foreground">{(t.questions as Question[]).length} spørgsmål</p>
+              <PingRoleField id={t.id} title={t.title} value={t.ping_role_id ?? ""} onSaved={refresh} />
             </div>
             <div className="flex gap-2">
               <button onClick={async () => { await supabase.from("application_types").update({ is_open: !t.is_open }).eq("id", t.id); refresh(); }} className="btn-ghost !min-h-9 !px-3">
@@ -195,6 +196,28 @@ export function ApiKeyBox() {
           </dd>
         </div>
       </dl>
+    </div>
+  );
+}
+
+function PingRoleField({ id, title, value, onSaved }: { id: string; title: string; value: string; onSaved: () => void }) {
+  const [v, setV] = useState(value);
+  const [msg, setMsg] = useState("");
+  const dirty = v.trim() !== value;
+  async function save() {
+    const role = v.trim();
+    if (role && !/^\d{5,25}$/.test(role)) { setMsg("Kun tal (rolle-ID)"); return; }
+    const { error } = await supabase.from("application_types").update({ ping_role_id: role }).eq("id", id);
+    if (error) { setMsg("Kunne ikke gemme"); return; }
+    await logAction({ data: { action: role ? "Satte pingrolle for ansøgningstype" : "Fjernede pingrolle for ansøgningstype", target: title } });
+    setMsg("Gemt"); onSaved();
+  }
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-2">
+      <input value={v} onChange={(e) => { setV(e.target.value); setMsg(""); }} placeholder="Discord rolle-ID at pinge" inputMode="numeric" maxLength={25}
+        aria-label={`Pingrolle for ${title}`} className="w-56 rounded-sm border border-border bg-background px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary-glow focus:outline-none" />
+      <button type="button" onClick={save} disabled={!dirty} className="btn-ghost !min-h-8 !px-3 text-sm">Gem rolle</button>
+      {msg && <span className="text-xs text-muted-foreground">{msg}</span>}
     </div>
   );
 }
