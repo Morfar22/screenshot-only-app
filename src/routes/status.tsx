@@ -69,7 +69,8 @@ function StatusPage() {
 
   return (
     <PageShell>
-      <section className="rune-ring border-b border-border pt-32 pb-16">
+      <section className="relative isolate overflow-hidden border-b border-border pt-32 pb-16">
+        <div className="rune-ring absolute left-1/2 top-1/2 -z-10 aspect-square w-[900px] -translate-x-1/2 -translate-y-1/2 opacity-60" aria-hidden />
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <p className="eyebrow">Status</p>
           <h1 className="mt-3 font-display text-5xl font-bold uppercase tracking-wide sm:text-6xl">Serverstatus</h1>
